@@ -62,6 +62,9 @@ class SpellChecker {
         }
 
         if (matchFound) {
+          if (inWord[0] === inWord[0].toUpperCase()) {
+            outWord = outWord[0].toUpperCase() + outWord.substring(1);
+          }
           changeMap.set(inWord, outWord);
         }
       }

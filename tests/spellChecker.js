@@ -70,7 +70,7 @@ testRunner: {
       const result = spellChecker[method](...pars);
       try {
         total++;
-        assert.strictEqual(
+        assert.deepStrictEqual(
           result,
           expected,
           `Error in method ${method} in test "${name}"`
