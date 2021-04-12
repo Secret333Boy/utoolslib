@@ -57,6 +57,8 @@ const tests = {
 testRunner: {
   const spellChecker = new SpellChecker(testDict);
   const methods = Object.getOwnPropertyNames(SpellChecker.prototype);
+  let failed = 0;
+  let total = 0;
 
   for (const method of methods) {
     if (method === 'constructor') continue;
@@ -67,14 +69,18 @@ testRunner: {
       const [expected, name, ...pars] = test;
       const result = spellChecker[method](...pars);
       try {
+        total++;
         assert.strictEqual(
           result,
           expected,
           `Error in method ${method} in test "${name}"`
         );
       } catch (err) {
+        failed++;
         console.log(err);
       }
     }
   }
+
+  console.log(`Total: ${total}; Failed: ${failed}`);
 }
