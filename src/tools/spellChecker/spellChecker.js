@@ -40,23 +40,29 @@ class SpellChecker {
     const changeMap = new Map();
 
     for (const inWord of inWords) {
-      if (changeMap.has(inWord)) continue;
+      if (changeMap.has(inWord.toLowerCase())) continue;
 
-      if (!dictWords.includes(inWord)) {
+      if (!dictWords.includes(inWord.toLowerCase())) {
         let minDiff;
+        let maxSame;
         let matchFound = false;
         let outWord;
 
         for (const dictWord of dictWords) {
           const diff = this._calcDiff(inWord, dictWord);
+          const same = this._calcSame(inWord, dictWord);
 
           if (diff >= inWord.length) continue;
           if (diff > maxDiff) continue;
-          if (minDiff === undefined) minDiff = diff;
+          if (minDiff === undefined) {
+            minDiff = diff;
+            maxSame = same;
+          }
 
-          if (diff <= maxDiff && diff <= minDiff) {
+          if (diff <= maxDiff && diff <= minDiff && same >= maxSame) {
             matchFound = true;
             minDiff = diff;
+            maxSame = same;
             outWord = dictWord;
           }
         }
@@ -98,6 +104,19 @@ class SpellChecker {
     }, 0);
 
     return diff;
+  }
+
+  _calcSame(w1, w2) {
+    const [arr1, arr2] = [w1, w2].map((el) => el.toLowerCase().split(''));
+    let same = 0;
+
+    for (let i = 0; i < arr1.length; i++) {
+      for (let j = i; j < arr2.length; j++) {
+        if (arr1[i] === arr2[j]) same++;
+      }
+    }
+
+    return same;
   }
 }
 
