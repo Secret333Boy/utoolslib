@@ -84,22 +84,19 @@ class SpellChecker {
     return words;
   }
 
-  _calcDiff(word1, word2) {
-    const arr1 = word1.split('');
-    const arr2 = word2.split('');
-    const minLength = Math.min(arr1.length, arr2.length);
-    const maxLength = Math.max(arr1.length, arr2.length);
-    let diff = 0;
+  _calcDiff(w1, w2) {
+    const [short, long] = [w1, w2]
+      .sort((w1, w2) => w1.length - w2.length)
+      .map((el) => el.toLowerCase().split(''));
 
-    for (let i = 0; i < minLength; i++) {
-      if (!arr2.includes(arr1[i])) {
-        diff++;
-        continue;
-      }
-      arr2.splice(arr2.indexOf(arr1[i]), 1);
-    }
+    let diff = long.length - short.length;
+    diff += short.reduce((acc, val) => {
+      if (!long.includes(val)) return acc + 1;
 
-    diff += maxLength - minLength;
+      long.splice(long.indexOf(val), 1);
+      return acc;
+    }, 0);
+
     return diff;
   }
 }
