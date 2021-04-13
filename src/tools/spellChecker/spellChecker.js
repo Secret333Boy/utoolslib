@@ -37,10 +37,10 @@ class SpellChecker {
   check(text, maxDiff) {
     const dictWords = this.dictionary.words;
     const inWords = this._parseWords(text);
-    const changeMap = new Map();
+    const replaceMap = new Map();
 
     for (const inWord of inWords) {
-      if (changeMap.has(inWord.toLowerCase())) continue;
+      if (replaceMap.has(inWord.toLowerCase())) continue;
 
       if (!dictWords.includes(inWord.toLowerCase())) {
         let minDiff;
@@ -71,17 +71,12 @@ class SpellChecker {
           if (inWord[0] === inWord[0].toUpperCase()) {
             outWord = outWord[0].toUpperCase() + outWord.substring(1);
           }
-          changeMap.set(inWord, outWord);
+          replaceMap.set(inWord, outWord);
         }
       }
     }
 
-    let res = text;
-    for (const entry of changeMap) {
-      const regExp = new RegExp(entry[0], 'gi');
-      res = res.replace(regExp, entry[1]);
-    }
-    return res;
+    return this._replaceWords(text, replaceMap);
   }
 
   _parseWords(text) {
@@ -117,6 +112,15 @@ class SpellChecker {
     }
 
     return same;
+  }
+
+  _replaceWords(text, replaceMap) {
+    let res = text;
+    for (const entry of replaceMap) {
+      const regExp = new RegExp(`\\b${entry[0]}\\b`, 'gi');
+      res = res.replace(regExp, entry[1]);
+    }
+    return res;
   }
 }
 
