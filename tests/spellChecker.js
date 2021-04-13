@@ -32,7 +32,7 @@ const tests = {
     [0, 'Same word', 'tree', 'tree'],
     [0, 'Scrambled word', 'property', 'roptrype'],
     [0, 'Partly scrambled word', 'trespassing', 'terspassign'],
-    [3, 'Three letter diff', 'asemblli', 'assembly'],
+    [2, 'Two letter diff', 'asemblli', 'assembly'],
     [6, 'Longer word', 'ring', 'ringleader'],
   ],
   _parseWords: [
