@@ -104,10 +104,16 @@ class SpellChecker {
   _calcSame(w1, w2) {
     const [arr1, arr2] = [w1, w2].map((el) => el.toLowerCase().split(''));
     let same = 0;
+    let index2 = 0;
 
     for (let i = 0; i < arr1.length; i++) {
-      for (let j = i; j < arr2.length; j++) {
-        if (arr1[i] === arr2[j]) same++;
+      if (index2 >= arr2.length - 1) break;
+      for (let j = index2; j < arr2.length; j++) {
+        if (arr1[i] === arr2[j]) {
+          same++;
+          index2 = j;
+          break;
+        }
       }
     }
 
