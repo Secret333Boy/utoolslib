@@ -2,9 +2,9 @@
 
 const assert = require('assert').strict;
 const fs = require('fs');
-const SpellChecker = require('../src/tools/spellChecker/spellChecker.js');
+const SpellChecker = require('../../src/tools/spellChecker/spellChecker.js');
 
-const dictPath = 'tests/spellCheckerDict.txt';
+const dictPath = 'tests/spellChecker/dict.txt';
 const wordRegex = /[a-z]+/gi;
 const testDict = fs.readFileSync(dictPath, 'utf8').match(wordRegex);
 
