@@ -3,7 +3,6 @@
   "version": "1.0.0",
   "description": "Simple library for text parsing and modificaiton.",
   "main": "index.js",
-  "dependencies": {},
   "devDependencies": {
     "eslint": "^7.23.0",
     "prettier": "^2.2.1"
