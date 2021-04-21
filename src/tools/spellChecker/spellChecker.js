@@ -42,6 +42,30 @@ class Searcher {
     return [false, inWord];
   }
 
+  static linearSearch(inWord, dictWords, maxDiff) {
+    let maxSame = 0;
+    let minDiff = inWord.length;
+    let matchFound = false;
+    let outWord = inWord;
+
+    for (const dictWord of dictWords) {
+      const same = this._calcSame(inWord, dictWord);
+      const diff = this._calcDiff(inWord, dictWord);
+
+      if (diff >= inWord.length) continue;
+      if (diff > maxDiff) continue;
+
+      if (same > maxSame && diff <= maxDiff && diff < minDiff) {
+        matchFound = true;
+        maxSame = same;
+        minDiff = diff;
+        outWord = dictWord;
+      }
+    }
+
+    return [matchFound, outWord];
+  }
+
   static _edits(word) {
     const letters = 'abcdefghijklmnopqrstuvwxyz';
     const splits = this._splits(word);
@@ -102,6 +126,42 @@ class Searcher {
     }
     return res;
   }
+
+  static _calcDiff(w1, w2) {
+    const [short, long] = [w1, w2]
+      .sort((w1, w2) => w1.length - w2.length)
+      .map((el) => el.toLowerCase().split(''));
+
+    let diff = long.length - short.length;
+    diff += short.reduce((acc, val) => {
+      if (!long.includes(val)) return acc + 1;
+
+      long.splice(long.indexOf(val), 1);
+      return acc;
+    }, 0);
+
+    return diff;
+  }
+
+  static _calcSame(w1, w2) {
+    const [arr1, arr2] = [w1, w2].map((el) => el.toLowerCase().split(''));
+    let same = 0;
+    let index2 = 0;
+
+    for (let i = 0; i < arr1.length; i++) {
+      if (index2 >= arr2.length - 1) break;
+
+      for (let j = index2; j < arr2.length; j++) {
+        if (arr1[i] === arr2[j]) {
+          same++;
+          index2 = j;
+          break;
+        }
+      }
+    }
+
+    return same;
+  }
 }
 
 class SpellChecker {
@@ -121,31 +181,15 @@ class SpellChecker {
         let [matchFound, outWord] = Searcher.oneEditSearch(inWord, dictWords);
 
         if (!matchFound) {
-          let maxSame = 0;
-          let minDiff = inWord.length;
-
-          for (const dictWord of dictWords) {
-            const same = this._calcSame(inWord, dictWord);
-            const diff = this._calcDiff(inWord, dictWord);
-
-            if (diff >= inWord.length) continue;
-            if (diff > maxDiff) continue;
-
-            if (same > maxSame && diff <= maxDiff && diff < minDiff) {
-              matchFound = true;
-              maxSame = same;
-              minDiff = diff;
-              outWord = dictWord;
-            }
-          }
+          [matchFound, outWord] = Searcher.linearSearch(
+            inWord,
+            dictWords,
+            maxDiff
+          );
         }
 
         if (matchFound) {
-          let tempWord = outWord;
-          if (inWord[0] === inWord[0].toUpperCase()) {
-            tempWord = outWord[0].toUpperCase() + outWord.substring(1);
-          }
-          replaceMap.set(inWord, tempWord);
+          replaceMap.set(inWord, this._capitalize(inWord, outWord));
         }
       }
     }
@@ -159,42 +203,6 @@ class SpellChecker {
     return words;
   }
 
-  _calcDiff(w1, w2) {
-    const [short, long] = [w1, w2]
-      .sort((w1, w2) => w1.length - w2.length)
-      .map((el) => el.toLowerCase().split(''));
-
-    let diff = long.length - short.length;
-    diff += short.reduce((acc, val) => {
-      if (!long.includes(val)) return acc + 1;
-
-      long.splice(long.indexOf(val), 1);
-      return acc;
-    }, 0);
-
-    return diff;
-  }
-
-  _calcSame(w1, w2) {
-    const [arr1, arr2] = [w1, w2].map((el) => el.toLowerCase().split(''));
-    let same = 0;
-    let index2 = 0;
-
-    for (let i = 0; i < arr1.length; i++) {
-      if (index2 >= arr2.length - 1) break;
-
-      for (let j = index2; j < arr2.length; j++) {
-        if (arr1[i] === arr2[j]) {
-          same++;
-          index2 = j;
-          break;
-        }
-      }
-    }
-
-    return same;
-  }
-
   _replaceWords(text, replaceMap) {
     let res = text;
     for (const entry of replaceMap) {
@@ -202,6 +210,14 @@ class SpellChecker {
       res = res.replace(regExp, entry[1]);
     }
     return res;
+  }
+
+  _capitalize(w1, w2) {
+    let tempWord = w2;
+    if (w1[0] === w1[0].toUpperCase()) {
+      tempWord = w2[0].toUpperCase() + w2.substring(1);
+    }
+    return tempWord;
   }
 }
 
