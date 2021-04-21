@@ -29,6 +29,81 @@ class Dictionary {
   }
 }
 
+class Searcher {
+  static oneEditSearch(inWord, dictWords) {
+    const oneEdits = this._edits(inWord);
+
+    for (const edit of oneEdits) {
+      if (dictWords.includes(edit)) {
+        return [true, edit];
+      }
+    }
+
+    return [false, inWord];
+  }
+
+  static _edits(word) {
+    const letters = 'abcdefghijklmnopqrstuvwxyz';
+    const splits = this._splits(word);
+    const deletes = this._deletes(word, splits);
+    const transposes = this._transposes(word, splits);
+    const replaces = this._replaces(word, splits, letters);
+    const inserts = this._inserts(word, splits, letters);
+
+    return deletes.concat(transposes, replaces, inserts);
+  }
+
+  static _splits(word) {
+    const res = [];
+    for (let i = 0; i < word.length + 1; i++) {
+      res.push([word.substring(0, i), word.substring(i)]);
+    }
+    return res;
+  }
+
+  static _deletes(word, splits) {
+    const res = [];
+    for (const split of splits) {
+      if (split[1] !== '') {
+        res.push(split[0] + split[1].substring(1));
+      }
+    }
+    return res;
+  }
+
+  static _transposes(word, splits) {
+    const res = [];
+    for (const split of splits) {
+      if (split[1].length >= 2) {
+        res.push(split[0] + split[1][1] + split[1][0] + split[1].substring(2));
+      }
+    }
+    return res;
+  }
+
+  static _replaces(word, splits, letters) {
+    const res = [];
+    for (const split of splits) {
+      for (const letter of letters) {
+        if (split[1] !== '') {
+          res.push(split[0] + letter + split[1].substring(1));
+        }
+      }
+    }
+    return res;
+  }
+
+  static _inserts(word, splits, letters) {
+    const res = [];
+    for (const split of splits) {
+      for (const letter of letters) {
+        res.push(split[0] + letter + split[1]);
+      }
+    }
+    return res;
+  }
+}
+
 class SpellChecker {
   constructor(words = []) {
     this.dictionary = new Dictionary(words);
@@ -40,38 +115,37 @@ class SpellChecker {
     const replaceMap = new Map();
 
     for (const inWord of inWords) {
-      if (replaceMap.has(inWord.toLowerCase())) continue;
+      if (replaceMap.has(inWord)) continue;
 
       if (!dictWords.includes(inWord.toLowerCase())) {
-        let minDiff;
-        let maxSame;
-        let matchFound = false;
-        let outWord;
+        let [matchFound, outWord] = Searcher.oneEditSearch(inWord, dictWords);
 
-        for (const dictWord of dictWords) {
-          const diff = this._calcDiff(inWord, dictWord);
-          const same = this._calcSame(inWord, dictWord);
+        if (!matchFound) {
+          let maxSame = 0;
+          let minDiff = inWord.length;
 
-          if (diff >= inWord.length) continue;
-          if (diff > maxDiff) continue;
-          if (minDiff === undefined) {
-            minDiff = diff;
-            maxSame = same;
-          }
+          for (const dictWord of dictWords) {
+            const same = this._calcSame(inWord, dictWord);
+            const diff = this._calcDiff(inWord, dictWord);
 
-          if (diff <= maxDiff && diff <= minDiff && same >= maxSame) {
-            matchFound = true;
-            minDiff = diff;
-            maxSame = same;
-            outWord = dictWord;
+            if (diff >= inWord.length) continue;
+            if (diff > maxDiff) continue;
+
+            if (same > maxSame && diff <= maxDiff && diff < minDiff) {
+              matchFound = true;
+              maxSame = same;
+              minDiff = diff;
+              outWord = dictWord;
+            }
           }
         }
 
         if (matchFound) {
+          let tempWord = outWord;
           if (inWord[0] === inWord[0].toUpperCase()) {
-            outWord = outWord[0].toUpperCase() + outWord.substring(1);
+            tempWord = outWord[0].toUpperCase() + outWord.substring(1);
           }
-          replaceMap.set(inWord, outWord);
+          replaceMap.set(inWord, tempWord);
         }
       }
     }
@@ -108,6 +182,7 @@ class SpellChecker {
 
     for (let i = 0; i < arr1.length; i++) {
       if (index2 >= arr2.length - 1) break;
+
       for (let j = index2; j < arr2.length; j++) {
         if (arr1[i] === arr2[j]) {
           same++;
