@@ -6,6 +6,7 @@ const Searcher = require('./searcher.js');
 class SpellChecker {
   constructor(words = []) {
     this.dictionary = new Dictionary(words);
+    this.searcher = new Searcher();
   }
 
   check(text, maxDiff) {
@@ -17,10 +18,13 @@ class SpellChecker {
       if (replaceMap.has(inWord)) continue;
 
       if (!dictWords.includes(inWord.toLowerCase())) {
-        let [matchFound, outWord] = Searcher.oneEditSearch(inWord, dictWords);
+        let [matchFound, outWord] = this.searcher.oneEditSearch(
+          inWord,
+          dictWords
+        );
 
         if (!matchFound) {
-          [matchFound, outWord] = Searcher.linearSearch(
+          [matchFound, outWord] = this.searcher.linearSearch(
             inWord,
             dictWords,
             maxDiff

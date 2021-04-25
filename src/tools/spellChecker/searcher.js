@@ -1,7 +1,7 @@
 'use strict';
 
 class Searcher {
-  static oneEditSearch(inWord, dictWords) {
+  oneEditSearch(inWord, dictWords) {
     const oneEdits = this._edits(inWord);
 
     for (const edit of oneEdits) {
@@ -13,7 +13,7 @@ class Searcher {
     return [false, inWord];
   }
 
-  static linearSearch(inWord, dictWords, maxDiff) {
+  linearSearch(inWord, dictWords, maxDiff) {
     let maxSame = 0;
     let minDiff = inWord.length;
     let matchFound = false;
@@ -37,7 +37,7 @@ class Searcher {
     return [matchFound, outWord];
   }
 
-  static _edits(word) {
+  _edits(word) {
     const letters = 'abcdefghijklmnopqrstuvwxyz';
     const splits = this._splits(word);
     const deletes = this._deletes(word, splits);
@@ -48,7 +48,7 @@ class Searcher {
     return deletes.concat(transposes, replaces, inserts);
   }
 
-  static _splits(word) {
+  _splits(word) {
     const res = [];
     for (let i = 0; i < word.length + 1; i++) {
       res.push([word.substring(0, i), word.substring(i)]);
@@ -56,7 +56,7 @@ class Searcher {
     return res;
   }
 
-  static _deletes(word, splits) {
+  _deletes(word, splits) {
     const res = [];
     for (const split of splits) {
       if (split[1] !== '') {
@@ -66,7 +66,7 @@ class Searcher {
     return res;
   }
 
-  static _transposes(word, splits) {
+  _transposes(word, splits) {
     const res = [];
     for (const split of splits) {
       if (split[1].length >= 2) {
@@ -76,7 +76,7 @@ class Searcher {
     return res;
   }
 
-  static _replaces(word, splits, letters) {
+  _replaces(word, splits, letters) {
     const res = [];
     for (const split of splits) {
       for (const letter of letters) {
@@ -88,7 +88,7 @@ class Searcher {
     return res;
   }
 
-  static _inserts(word, splits, letters) {
+  _inserts(word, splits, letters) {
     const res = [];
     for (const split of splits) {
       for (const letter of letters) {
@@ -98,7 +98,7 @@ class Searcher {
     return res;
   }
 
-  static _calcDiff(w1, w2) {
+  _calcDiff(w1, w2) {
     const [short, long] = [w1, w2]
       .sort((w1, w2) => w1.length - w2.length)
       .map((el) => el.toLowerCase().split(''));
@@ -114,7 +114,7 @@ class Searcher {
     return diff;
   }
 
-  static _calcSame(w1, w2) {
+  _calcSame(w1, w2) {
     const [arr1, arr2] = [w1, w2].map((el) => el.toLowerCase().split(''));
     let same = 0;
     let index2 = 0;
