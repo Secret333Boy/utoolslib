@@ -1,8 +1,8 @@
 'use strict';
 
-const assert = require('assert').strict;
 const fs = require('fs');
 const SpellChecker = require('../../src/tools/spellChecker/spellChecker.js');
+const testRunner = require('./testRunner.js');
 
 const dictPath = 'tests/spellChecker/dict.txt';
 const wordRegex = /[a-z]+/gi;
@@ -27,14 +27,6 @@ const tests = {
       3,
     ],
   ],
-  _calcDiff: [
-    [1, 'One letter diff', 'cherleader', 'cheerleader'],
-    [0, 'Same word', 'tree', 'tree'],
-    [0, 'Scrambled word', 'property', 'roptrype'],
-    [0, 'Partly scrambled word', 'trespassing', 'terspassign'],
-    [2, 'Two letter diff', 'asemblli', 'assembly'],
-    [6, 'Longer word', 'ring', 'ringleader'],
-  ],
   _parseWords: [
     [
       [
@@ -54,33 +46,4 @@ const tests = {
   ],
 };
 
-testRunner: {
-  const spellChecker = new SpellChecker(testDict);
-  const methods = Object.getOwnPropertyNames(SpellChecker.prototype);
-  let failed = 0;
-  let total = 0;
-
-  for (const method of methods) {
-    if (method === 'constructor') continue;
-    if (typeof spellChecker[method] !== 'function') continue;
-    if (tests[method] === undefined) continue;
-
-    for (const test of tests[method]) {
-      const [expected, name, ...pars] = test;
-      const result = spellChecker[method](...pars);
-      try {
-        total++;
-        assert.deepStrictEqual(
-          result,
-          expected,
-          `Error in method ${method} in test "${name}"`
-        );
-      } catch (err) {
-        failed++;
-        console.log(err);
-      }
-    }
-  }
-
-  console.log(`Total: ${total}; Failed: ${failed}`);
-}
+testRunner(SpellChecker, tests, testDict);
