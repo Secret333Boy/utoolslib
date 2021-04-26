@@ -2,20 +2,20 @@
 
 const assert = require('assert').strict;
 
-const testRunner = (ClassName, tests, ...initPars) => {
-  const classInst = new ClassName(...initPars);
-  const methods = Object.getOwnPropertyNames(ClassName.prototype);
+const testRunner = (obj, tests) => {
+  const objPrototype = Object.getPrototypeOf(obj);
+  const methods = Object.getOwnPropertyNames(objPrototype);
   let failed = 0;
   let total = 0;
 
   for (const method of methods) {
     if (method === 'constructor') continue;
-    if (typeof classInst[method] !== 'function') continue;
+    if (typeof obj[method] !== 'function') continue;
     if (tests[method] === undefined) continue;
 
     for (const test of tests[method]) {
       const [expected, name, ...pars] = test;
-      const result = classInst[method](...pars);
+      const result = obj[method](...pars);
       try {
         total++;
         assert.deepStrictEqual(

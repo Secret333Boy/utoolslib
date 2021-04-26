@@ -1,12 +1,9 @@
 'use strict';
 
-const fs = require('fs');
 const SpellChecker = require('../../src/tools/spellChecker/spellChecker.js');
 const testRunner = require('./testRunner.js');
 
 const dictPath = 'tests/spellChecker/dict.txt';
-const wordRegex = /[a-z]+/gi;
-const testDict = fs.readFileSync(dictPath, 'utf8').match(wordRegex);
 
 const tests = {
   check: [
@@ -46,4 +43,7 @@ const tests = {
   ],
 };
 
-testRunner(SpellChecker, tests, testDict);
+const checker = new SpellChecker();
+checker.createDictionary(dictPath);
+
+testRunner(checker, tests);

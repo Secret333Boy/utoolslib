@@ -14,4 +14,6 @@ const tests = {
   ],
 };
 
-testRunner(Searcher, tests);
+const searcher = new Searcher();
+
+testRunner(searcher, tests);

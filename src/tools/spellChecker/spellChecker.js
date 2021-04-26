@@ -2,14 +2,24 @@
 
 const Dictionary = require('./dictionary.js');
 const Searcher = require('./searcher.js');
+const fs = require('fs');
+
+const WORD_REGEXP = /\b[a-z]+\b/gi;
 
 class SpellChecker {
-  constructor(words = []) {
-    this.dictionary = new Dictionary(words);
+  constructor() {
     this.searcher = new Searcher();
   }
 
+  createDictionary(path) {
+    const data = fs.readFileSync(path, 'utf8');
+    const words = data.match(WORD_REGEXP).map((w) => w.toLowerCase());
+    this.dictionary = new Dictionary(words);
+  }
+
   check(text, maxDiff) {
+    if (this.dictionary === undefined) return text;
+
     const dictWords = this.dictionary.words;
     const inWords = this._parseWords(text);
     const replaceMap = new Map();
@@ -41,8 +51,7 @@ class SpellChecker {
   }
 
   _parseWords(text) {
-    const WORD_REGEX = /[a-z]+/gi;
-    const words = text.match(WORD_REGEX);
+    const words = text.match(WORD_REGEXP);
     return words;
   }
 
