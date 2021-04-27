@@ -1,2 +1,2 @@
 'use strict';
-const TextEncryptor = require('./text-encryptor.js');
+const TextEncryptor = require('./tools/textEncryptor/text-encryptor.js');
