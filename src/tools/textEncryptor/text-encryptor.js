@@ -3,7 +3,7 @@ const fs = require('fs');
 
 class TextEncryptor {
   constructor(seed) {
-    this.seed = seed;
+    this._seed = seed;
   }
 
   encryptFile(path) {
@@ -12,7 +12,7 @@ class TextEncryptor {
       const newData = [];
       for (let i = 0; i < data.length; i++) {
         let code = data[i].charCodeAt(0);
-        code += this.seed * 1000;
+        code += this._seed * 1000;
         newData.push(String.fromCharCode(code));
       }
       fs.writeFileSync(path, newData.join(''));
@@ -25,7 +25,7 @@ class TextEncryptor {
       const newData = [];
       for (let i = 0; i < data.length; i++) {
         let code = data[i].charCodeAt(0);
-        code -= this.seed * 1000;
+        code -= this._seed * 1000;
         newData.push(String.fromCharCode(code));
       }
       fs.writeFileSync(path, newData.join(''));
