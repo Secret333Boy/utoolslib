@@ -4,6 +4,11 @@ const fs = require('fs');
 class TextEncryptor {
   constructor(seed) {
     this._seed = seed;
+    this._enternalSeed = 99241492;
+  }
+
+  _modifyCode(code) {
+    return code ^ (this._seed ^ 1 ^ this._enternalSeed);
   }
 
   encryptFile(path) {
@@ -12,7 +17,7 @@ class TextEncryptor {
       const newData = [];
       for (let i = 0; i < data.length; i++) {
         let code = data[i].charCodeAt(0);
-        code += this._seed * 1000;
+        code = this._modifyCode(code);
         newData.push(String.fromCharCode(code));
       }
       fs.writeFileSync(path, newData.join(''));
@@ -25,7 +30,7 @@ class TextEncryptor {
       const newData = [];
       for (let i = 0; i < data.length; i++) {
         let code = data[i].charCodeAt(0);
-        code -= this._seed * 1000;
+        code = this._modifyCode(code);
         newData.push(String.fromCharCode(code));
       }
       fs.writeFileSync(path, newData.join(''));
