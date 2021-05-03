@@ -30,7 +30,7 @@ const testRunner = (obj, tests) => {
     }
   }
 
-  console.log(`Total: ${total}; Failed: ${failed}`);
+  console.log(`Total: ${total}; Failed: ${failed}\n`);
 };
 
 module.exports = testRunner;

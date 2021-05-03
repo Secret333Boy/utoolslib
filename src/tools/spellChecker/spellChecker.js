@@ -9,23 +9,42 @@ const WORD_REGEXP = /\b[a-z]+\b/gi;
 class SpellChecker {
   constructor() {
     this.searcher = new Searcher();
+    this.replaceMap = new Map();
+    this.maxDiff = 5;
   }
 
   createDictionary(path) {
+    if ('dictionary' in this) return false;
+
     const data = fs.readFileSync(path, 'utf8');
     const words = data.match(WORD_REGEXP).map((w) => w.toLowerCase());
     this.dictionary = new Dictionary(words);
+
+    const push = this.updateMap.bind(this);
+    const clear = this.clearMap.bind(this);
+    this.dictionary = this._proxify(this.dictionary, { push, clear });
+
+    return true;
   }
 
-  check(text, maxDiff) {
-    if (this.dictionary === undefined) return text;
+  extendDictionary(path) {
+    if (!('dictionary' in this)) return false;
+
+    const data = fs.readFileSync(path, 'utf8');
+    const words = data.match(WORD_REGEXP).map((w) => w.toLowerCase());
+    this.dictionary.push(words);
+
+    return true;
+  }
+
+  check(text, maxDiff = this.maxDiff) {
+    if (!('dictionary' in this)) return text;
 
     const dictWords = this.dictionary.words;
-    const inWords = this._parseWords(text);
-    const replaceMap = new Map();
+    const inWords = this._parseWords(text).map((w) => w.toLowerCase());
 
     for (const inWord of inWords) {
-      if (replaceMap.has(inWord)) continue;
+      if (this.replaceMap.has(inWord)) continue;
 
       if (!dictWords.includes(inWord.toLowerCase())) {
         let [matchFound, outWord] = this.searcher.oneEditSearch(
@@ -42,12 +61,14 @@ class SpellChecker {
         }
 
         if (matchFound) {
-          replaceMap.set(inWord, this._capitalize(inWord, outWord));
+          this.replaceMap.set(inWord, outWord);
         }
       }
     }
 
-    return this._replaceWords(text, replaceMap);
+    const res = this._replaceWords(text, this.replaceMap);
+    this._lowCaseMap();
+    return res;
   }
 
   _parseWords(text) {
@@ -59,7 +80,14 @@ class SpellChecker {
     let res = text;
     for (const entry of replaceMap) {
       const regExp = new RegExp(`\\b${entry[0]}\\b`, 'gi');
-      res = res.replace(regExp, entry[1]);
+      const matches = text.match(regExp);
+      if (matches !== null) {
+        res = matches.reduce((acc, match) => {
+          const newWord = this._capitalize(match, entry[1]);
+          const mRegExp = new RegExp(`\\b${match}\\b`);
+          return acc.replace(mRegExp, newWord);
+        }, res);
+      }
     }
     return res;
   }
@@ -70,6 +98,59 @@ class SpellChecker {
       tempWord = w2[0].toUpperCase() + w2.substring(1);
     }
     return tempWord;
+  }
+
+  _proxify(obj, methodMixins) {
+    const handler = {
+      get(target, prop) {
+        if (prop in methodMixins) {
+          return (...args) => {
+            methodMixins[prop](...args);
+            return target[prop](...args);
+          };
+        }
+
+        return target[prop];
+      },
+    };
+
+    return new Proxy(obj, handler);
+  }
+
+  clearMap() {
+    this.replaceMap.clear();
+  }
+
+  _lowCaseMap() {
+    for (const entry of this.replaceMap.entries()) {
+      const newEntry = entry.map((el) => el.toLowerCase());
+      this.replaceMap.set(...newEntry);
+    }
+  }
+
+  updateMap(words) {
+    if (!('dictionary' in this)) return;
+    const allWords = this.dictionary.words.concat(words);
+    const tempMap = new Map();
+
+    for (const key of this.replaceMap.keys()) {
+      if (words.includes(key)) continue;
+
+      let [matchFound, newVal] = this.searcher.oneEditSearch(key, allWords);
+      if (!matchFound) {
+        [matchFound, newVal] = this.searcher.linearSearch(
+          key,
+          allWords,
+          this.maxDiff
+        );
+      }
+
+      if (matchFound) {
+        tempMap.set(key, newVal);
+      }
+    }
+
+    this.replaceMap = tempMap;
   }
 }
 
