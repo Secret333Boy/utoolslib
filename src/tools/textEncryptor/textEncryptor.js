@@ -7,8 +7,15 @@ class TextEncryptor {
       throw new Error(
         `Seed is expected to be a number. Its type is ${typeof seed}`
       );
-    this._seed = seed;
-    this._enternalSeed = 99241492;
+    Object.defineProperties(this, {
+      _seed: {
+        value: seed,
+      },
+      _enternalSeed: {
+        value: 99241492,
+      },
+    });
+    Object.freeze(this);
   }
 
   _modifyCode(code) {
