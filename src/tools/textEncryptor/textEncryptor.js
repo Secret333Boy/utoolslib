@@ -3,6 +3,10 @@ const fs = require('fs');
 
 class TextEncryptor {
   constructor(seed) {
+    if (typeof(seed) !== 'number')
+      throw new Error(
+        `Seed is expected to be a number. Its type is ${typeof seed}`
+      );
     this._seed = seed;
     this._enternalSeed = 99241492;
   }
