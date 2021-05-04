@@ -44,26 +44,10 @@ class SpellChecker {
     const inWords = this._parseWords(text).map((w) => w.toLowerCase());
 
     for (const inWord of inWords) {
-      if (this.replaceMap.has(inWord)) continue;
+      if (this.replaceMap.has(inWord.toLowerCase())) continue;
+      if (dictWords.includes(inWord.toLowerCase())) continue;
 
-      if (!dictWords.includes(inWord.toLowerCase())) {
-        let [matchFound, outWord] = this.searcher.oneEditSearch(
-          inWord,
-          dictWords
-        );
-
-        if (!matchFound) {
-          [matchFound, outWord] = this.searcher.linearSearch(
-            inWord,
-            dictWords,
-            maxDiff
-          );
-        }
-
-        if (matchFound) {
-          this.replaceMap.set(inWord, outWord);
-        }
-      }
+      this._setMatch(inWord, this.replaceMap, dictWords, maxDiff);
     }
 
     const res = this._replaceWords(text, this.replaceMap);
@@ -136,21 +120,22 @@ class SpellChecker {
     for (const key of this.replaceMap.keys()) {
       if (words.includes(key)) continue;
 
-      let [matchFound, newVal] = this.searcher.oneEditSearch(key, allWords);
-      if (!matchFound) {
-        [matchFound, newVal] = this.searcher.linearSearch(
-          key,
-          allWords,
-          this.maxDiff
-        );
-      }
-
-      if (matchFound) {
-        tempMap.set(key, newVal);
-      }
+      this._setMatch(key, tempMap, allWords, this.maxDiff);
     }
 
     this.replaceMap = tempMap;
+  }
+
+  _setMatch(key, map, words, diff) {
+    let [matchFound, match] = this.searcher.oneEditSearch(key, words);
+
+    if (!matchFound) {
+      [matchFound, match] = this.searcher.linearSearch(key, words, diff);
+    }
+
+    if (matchFound) {
+      map.set(key, match);
+    }
   }
 }
 
