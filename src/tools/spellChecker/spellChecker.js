@@ -2,6 +2,7 @@
 
 const Dictionary = require('./dictionary.js');
 const Searcher = require('./searcher.js');
+const PatternCollection = require('./patternCollection.js');
 const fs = require('fs');
 
 const WORD_REGEXP = /\b[a-z]+\b/gi;
@@ -19,9 +20,10 @@ class SpellChecker {
     const data = fs.readFileSync(path, 'utf8');
     const words = data.match(WORD_REGEXP).map((w) => w.toLowerCase());
     this.dictionary = new Dictionary(words);
+    this.patterns = new PatternCollection(this.dictionary);
 
-    const push = this.updateMap.bind(this);
-    const clear = this.clearMap.bind(this);
+    const push = this._updateMap.bind(this);
+    const clear = this._clearMap.bind(this);
     this.dictionary = this._proxify(this.dictionary, { push, clear });
 
     return true;
@@ -35,6 +37,11 @@ class SpellChecker {
     this.dictionary.push(words);
 
     return true;
+  }
+
+  addPattern(inExpr, outExpr) {
+    if (typeof inExpr !== 'string' || typeof outExpr !== 'string') return false;
+    this.searcher.patterns.set(inExpr, outExpr);
   }
 
   check(text, maxDiff = this.maxDiff) {
@@ -101,7 +108,7 @@ class SpellChecker {
     return new Proxy(obj, handler);
   }
 
-  clearMap() {
+  _clearMap() {
     this.replaceMap.clear();
   }
 
@@ -112,7 +119,7 @@ class SpellChecker {
     }
   }
 
-  updateMap(words) {
+  _updateMap(words) {
     if (!('dictionary' in this)) return;
     const allWords = this.dictionary.words.concat(words);
     const tempMap = new Map();
