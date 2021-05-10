@@ -41,7 +41,7 @@ class SpellChecker {
 
   addPattern(inExpr, outExpr) {
     if (typeof inExpr !== 'string' || typeof outExpr !== 'string') return false;
-    this.searcher.patterns.set(inExpr, outExpr);
+    this.patterns.add(inExpr, outExpr);
   }
 
   check(text, maxDiff = this.maxDiff) {

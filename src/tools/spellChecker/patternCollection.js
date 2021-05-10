@@ -2,7 +2,12 @@
 
 class PatternCollection {
   constructor(dict) {
-    this.dictionary = dict;
+    Object.defineProperty(this, 'dictionary', {
+      enumerable: false,
+      writable: true,
+      configurable: true,
+      value: dict,
+    });
   }
 
   add(inExpr, outExpr) {

@@ -1,8 +1,29 @@
 'use strict';
 
 class Searcher {
+  patternSearch(inWord, dictWords, patterns, maxDiff) {
+    let outWord = inWord;
+    for (const outExpr in patterns) {
+      if (patterns[outExpr].frequency < 0.01) continue;
+
+      const match = patterns[outExpr].find((p) => inWord.indexOf(p) >= 0);
+      if (match !== undefined) {
+        const mRegExp = new RegExp(match, 'gi');
+        outWord = outWord.replace(mRegExp, outExpr);
+        if (
+          dictWords.includes(outWord) &&
+          this._calcDiff(inWord, outWord) <= maxDiff
+        ) {
+          return [true, outWord];
+        }
+      }
+    }
+
+    return [false, inWord];
+  }
+
   oneEditSearch(inWord, dictWords) {
-    const oneEdits = this._edits(inWord);
+    const oneEdits = this._edits(inWord.toLowerCase());
 
     for (const edit of oneEdits) {
       if (dictWords.includes(edit)) {
