@@ -3,6 +3,7 @@
 const Dictionary = require('./dictionary.js');
 const Searcher = require('./searcher.js');
 const PatternCollection = require('./patternCollection.js');
+const proxify = require('./proxify.js');
 const fs = require('fs');
 
 const WORD_REGEXP = /\b[a-z]+\b/gi;
@@ -24,7 +25,7 @@ class SpellChecker {
 
     const push = this._updateMap.bind(this);
     const clear = this._clearMap.bind(this);
-    this.dictionary = this._proxify(this.dictionary, { push, clear });
+    this.dictionary = proxify(this.dictionary, { push, clear });
 
     return true;
   }
@@ -89,23 +90,6 @@ class SpellChecker {
       tempWord = w2[0].toUpperCase() + w2.substring(1);
     }
     return tempWord;
-  }
-
-  _proxify(obj, methodMixins) {
-    const handler = {
-      get(target, prop) {
-        if (prop in methodMixins) {
-          return (...args) => {
-            methodMixins[prop](...args);
-            return target[prop](...args);
-          };
-        }
-
-        return target[prop];
-      },
-    };
-
-    return new Proxy(obj, handler);
   }
 
   _clearMap() {
