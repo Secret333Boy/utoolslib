@@ -60,16 +60,17 @@ class Searcher {
 
   _edits(word) {
     const letters = 'abcdefghijklmnopqrstuvwxyz';
-    const splits = this._splits(word);
-    const deletes = this._deletes(word, splits);
-    const transposes = this._transposes(word, splits);
-    const replaces = this._replaces(word, splits, letters);
-    const inserts = this._inserts(word, splits, letters);
-
-    return deletes.concat(transposes, replaces, inserts);
+    const splits = this.splits(word);
+    const reducer = (res, edit) =>
+      res.concat(this[edit](word, splits, letters));
+    const res = ['deletes', 'transposes', 'replaces', 'inserts'].reduce(
+      reducer,
+      []
+    );
+    return res;
   }
 
-  _splits(word) {
+  splits(word) {
     const res = [];
     for (let i = 0; i < word.length + 1; i++) {
       res.push([word.substring(0, i), word.substring(i)]);
@@ -77,7 +78,7 @@ class Searcher {
     return res;
   }
 
-  _deletes(word, splits) {
+  deletes(word, splits) {
     const res = [];
     for (const split of splits) {
       if (split[1] !== '') {
@@ -87,7 +88,7 @@ class Searcher {
     return res;
   }
 
-  _transposes(word, splits) {
+  transposes(word, splits) {
     const res = [];
     for (const split of splits) {
       if (split[1].length >= 2) {
@@ -97,7 +98,7 @@ class Searcher {
     return res;
   }
 
-  _replaces(word, splits, letters) {
+  replaces(word, splits, letters) {
     const res = [];
     for (const split of splits) {
       for (const letter of letters) {
@@ -109,7 +110,7 @@ class Searcher {
     return res;
   }
 
-  _inserts(word, splits, letters) {
+  inserts(word, splits, letters) {
     const res = [];
     for (const split of splits) {
       for (const letter of letters) {
