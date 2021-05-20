@@ -25,8 +25,12 @@ class SpellChecker {
 
     const push = (words) => {
       this.replaceMap = Mapper.update(this, words);
+      this.patterns.updateFrequencies(this.dictionary.words.concat(words));
     };
-    const clear = this.replaceMap.clear;
+    const clear = () => {
+      this.replaceMap.clear();
+      this.patterns.clearFrequencies();
+    };
     this.dictionary = proxify(this.dictionary, { push, clear });
 
     return true;
