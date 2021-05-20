@@ -1,7 +1,17 @@
 'use strict';
 
 class Searcher {
-  patternSearch(inWord, dictWords, patterns, maxDiff) {
+  combinedSearch(...pars) {
+    const reducer = (res, srch) => {
+      if (res[0]) return res;
+      return this[srch](...pars);
+    };
+    return ['patternSearch', 'oneEditSearch', 'linearSearch'].reduce(reducer, [
+      false,
+      pars[0],
+    ]);
+  }
+  patternSearch(inWord, dictWords, maxDiff, patterns) {
     const variants = this._patternedVariants(inWord, patterns);
     let minDiff = maxDiff;
 
@@ -14,7 +24,6 @@ class Searcher {
       }
     };
 
-    console.log(variants);
     const outWord = variants.reduce(reducer, inWord);
     const matchFound = outWord !== inWord;
     return [matchFound, outWord];

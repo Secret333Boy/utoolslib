@@ -66,7 +66,7 @@ class SpellChecker {
         this.replaceMap,
         dictWords,
         maxDiff,
-        this.searcher
+        this
       );
     }
 

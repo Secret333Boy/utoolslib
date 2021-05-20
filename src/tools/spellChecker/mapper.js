@@ -17,25 +17,20 @@ const Mapper = {
     for (const key of checker.replaceMap.keys()) {
       if (words.includes(key)) continue;
 
-      tempMap = this.setMatch(
-        key,
-        tempMap,
-        allWords,
-        checker.maxDiff,
-        checker.searcher
-      );
+      tempMap = this.setMatch(key, tempMap, allWords, checker.maxDiff, checker);
     }
 
     return tempMap;
   },
 
-  setMatch(key, map, words, diff, searcher) {
+  setMatch(key, map, words, diff, checker) {
     const newMap = this.copy(map);
-    let [matchFound, match] = searcher.oneEditSearch(key, words);
-
-    if (!matchFound) {
-      [matchFound, match] = searcher.linearSearch(key, words, diff);
-    }
+    const [matchFound, match] = checker.searcher.combinedSearch(
+      key,
+      words,
+      diff,
+      checker.patterns
+    );
 
     if (matchFound) {
       newMap.set(key, match);
