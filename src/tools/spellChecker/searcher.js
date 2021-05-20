@@ -2,24 +2,22 @@
 
 class Searcher {
   patternSearch(inWord, dictWords, patterns, maxDiff) {
-    let outWord = inWord;
-    for (const outExpr in patterns) {
-      if (patterns[outExpr].frequency < 0.01) continue;
+    const variants = this._patternedVariants(inWord, patterns);
+    let minDiff = maxDiff;
 
-      const match = patterns[outExpr].find((p) => inWord.indexOf(p) >= 0);
-      if (match !== undefined) {
-        const mRegExp = new RegExp(match, 'gi');
-        outWord = outWord.replace(mRegExp, outExpr);
-        if (
-          dictWords.includes(outWord) &&
-          this._calcDiff(inWord, outWord) <= maxDiff
-        ) {
-          return [true, outWord];
-        }
+    const reducer = (res, w) => {
+      if (!dictWords.includes(w)) return res;
+
+      if (this._calcDiff(inWord, w) <= minDiff) {
+        minDiff = this._calcDiff(inWord, w);
+        return w;
       }
-    }
+    };
 
-    return [false, inWord];
+    console.log(variants);
+    const outWord = variants.reduce(reducer, inWord);
+    const matchFound = outWord !== inWord;
+    return [matchFound, outWord];
   }
 
   oneEditSearch(inWord, dictWords) {
@@ -56,6 +54,23 @@ class Searcher {
     }
 
     return [matchFound, outWord];
+  }
+
+  _patternedVariants(inWord, patterns) {
+    const variants = [];
+    for (const outExpr in patterns) {
+      if (patterns[outExpr].frequency < 0.01) continue;
+
+      const match = patterns[outExpr].find((p) => inWord.indexOf(p) >= 0);
+      if (match !== undefined) {
+        const mRegExp = new RegExp(match, 'gi');
+        const newWords = variants.concat(
+          variants.map((w) => w.replace(mRegExp, outExpr))
+        );
+        variants.push(...newWords, inWord.replace(mRegExp, outExpr));
+      }
+    }
+    return variants;
   }
 
   _edits(word) {

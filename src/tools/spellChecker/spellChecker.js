@@ -58,8 +58,8 @@ class SpellChecker {
     const inWords = Worder.parse(text).map((w) => w.toLowerCase());
 
     for (const inWord of inWords) {
-      if (this.replaceMap.has(inWord.toLowerCase())) continue;
-      if (dictWords.includes(inWord.toLowerCase())) continue;
+      if (this.replaceMap.has(inWord)) continue;
+      if (dictWords.includes(inWord)) continue;
 
       this.replaceMap = Mapper.setMatch(
         inWord,
