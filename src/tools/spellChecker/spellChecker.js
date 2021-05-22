@@ -18,7 +18,14 @@ class SpellChecker {
   createDictionary(path) {
     if ('dictionary' in this) return false;
 
-    const data = fs.readFileSync(path, 'utf8');
+    let data;
+    try {
+      data = fs.readFileSync(path, 'utf8');
+    } catch (err) {
+      console.log(`Can't read file: ${path}`);
+      return false;
+    }
+
     const words = data.match(Worder.WORD_REGEXP).map((w) => w.toLowerCase());
     this.dictionary = new Dictionary(words);
     this.patterns = new PatternCollection(this.dictionary);
@@ -39,7 +46,14 @@ class SpellChecker {
   extendDictionary(path) {
     if (!('dictionary' in this)) return false;
 
-    const data = fs.readFileSync(path, 'utf8');
+    let data;
+    try {
+      data = fs.readFileSync(path, 'utf8');
+    } catch (err) {
+      console.log(`Can't read file: ${path}`);
+      return false;
+    }
+
     const words = data.match(Worder.WORD_REGEXP).map((w) => w.toLowerCase());
     this.dictionary.push(words);
 
