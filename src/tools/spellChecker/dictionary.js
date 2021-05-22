@@ -4,6 +4,7 @@ class Dictionary {
   constructor(words = []) {
     this._words = words.sort();
     this._length = words.length;
+    //this[Symbol.iterator] = this._words[Symbol.iterator];
   }
 
   push(words) {

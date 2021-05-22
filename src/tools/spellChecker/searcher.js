@@ -1,8 +1,36 @@
 'use strict';
 
 class Searcher {
+  combinedSearch(...pars) {
+    const reducer = (res, srch) => {
+      if (res[0]) return res;
+      return this[srch](...pars);
+    };
+    return ['patternSearch', 'oneEditSearch', 'linearSearch'].reduce(reducer, [
+      false,
+      pars[0],
+    ]);
+  }
+  patternSearch(inWord, dictWords, maxDiff, patterns) {
+    const variants = this._patternedVariants(inWord, patterns);
+    let minDiff = maxDiff;
+
+    const reducer = (res, w) => {
+      if (!dictWords.includes(w)) return res;
+
+      if (this._calcDiff(inWord, w) <= minDiff) {
+        minDiff = this._calcDiff(inWord, w);
+        return w;
+      }
+    };
+
+    const outWord = variants.reduce(reducer, inWord);
+    const matchFound = outWord !== inWord;
+    return [matchFound, outWord];
+  }
+
   oneEditSearch(inWord, dictWords) {
-    const oneEdits = this._edits(inWord);
+    const oneEdits = this._edits(inWord.toLowerCase());
 
     for (const edit of oneEdits) {
       if (dictWords.includes(edit)) {
@@ -37,18 +65,36 @@ class Searcher {
     return [matchFound, outWord];
   }
 
-  _edits(word) {
-    const letters = 'abcdefghijklmnopqrstuvwxyz';
-    const splits = this._splits(word);
-    const deletes = this._deletes(word, splits);
-    const transposes = this._transposes(word, splits);
-    const replaces = this._replaces(word, splits, letters);
-    const inserts = this._inserts(word, splits, letters);
+  _patternedVariants(inWord, patterns) {
+    const variants = [];
+    for (const outExpr in patterns) {
+      if (patterns[outExpr].frequency < 0.01) continue;
 
-    return deletes.concat(transposes, replaces, inserts);
+      const match = patterns[outExpr].find((p) => inWord.indexOf(p) >= 0);
+      if (match !== undefined) {
+        const mRegExp = new RegExp(match, 'gi');
+        const newWords = variants.concat(
+          variants.map((w) => w.replace(mRegExp, outExpr))
+        );
+        variants.push(...newWords, inWord.replace(mRegExp, outExpr));
+      }
+    }
+    return variants;
   }
 
-  _splits(word) {
+  _edits(word) {
+    const letters = 'abcdefghijklmnopqrstuvwxyz';
+    const splits = this.splits(word);
+    const reducer = (res, edit) =>
+      res.concat(this[edit](word, splits, letters));
+    const res = ['deletes', 'transposes', 'replaces', 'inserts'].reduce(
+      reducer,
+      []
+    );
+    return res;
+  }
+
+  splits(word) {
     const res = [];
     for (let i = 0; i < word.length + 1; i++) {
       res.push([word.substring(0, i), word.substring(i)]);
@@ -56,7 +102,7 @@ class Searcher {
     return res;
   }
 
-  _deletes(word, splits) {
+  deletes(word, splits) {
     const res = [];
     for (const split of splits) {
       if (split[1] !== '') {
@@ -66,7 +112,7 @@ class Searcher {
     return res;
   }
 
-  _transposes(word, splits) {
+  transposes(word, splits) {
     const res = [];
     for (const split of splits) {
       if (split[1].length >= 2) {
@@ -76,7 +122,7 @@ class Searcher {
     return res;
   }
 
-  _replaces(word, splits, letters) {
+  replaces(word, splits, letters) {
     const res = [];
     for (const split of splits) {
       for (const letter of letters) {
@@ -88,7 +134,7 @@ class Searcher {
     return res;
   }
 
-  _inserts(word, splits, letters) {
+  inserts(word, splits, letters) {
     const res = [];
     for (const split of splits) {
       for (const letter of letters) {

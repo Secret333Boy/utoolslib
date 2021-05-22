@@ -2,74 +2,77 @@
 
 const Dictionary = require('./dictionary.js');
 const Searcher = require('./searcher.js');
+const Worder = require('./worder.js');
+const Mapper = require('./mapper.js');
+const PatternCollection = require('./patternCollection.js');
+const proxify = require('./proxify.js');
 const fs = require('fs');
-
-const WORD_REGEXP = /\b[a-z]+\b/gi;
 
 class SpellChecker {
   constructor() {
     this.searcher = new Searcher();
+    this.replaceMap = new Map();
+    this.maxDiff = 5;
   }
 
   createDictionary(path) {
+    if ('dictionary' in this) return false;
+
     const data = fs.readFileSync(path, 'utf8');
-    const words = data.match(WORD_REGEXP).map((w) => w.toLowerCase());
+    const words = data.match(Worder.WORD_REGEXP).map((w) => w.toLowerCase());
     this.dictionary = new Dictionary(words);
+    this.patterns = new PatternCollection(this.dictionary);
+
+    const push = (words) => {
+      this.replaceMap = Mapper.update(this, words);
+      this.patterns.updateFrequencies(this.dictionary.words.concat(words));
+    };
+    const clear = () => {
+      this.replaceMap.clear();
+      this.patterns.clearFrequencies();
+    };
+    this.dictionary = proxify(this.dictionary, { push, clear });
+
+    return true;
   }
 
-  check(text, maxDiff) {
-    if (this.dictionary === undefined) return text;
+  extendDictionary(path) {
+    if (!('dictionary' in this)) return false;
+
+    const data = fs.readFileSync(path, 'utf8');
+    const words = data.match(Worder.WORD_REGEXP).map((w) => w.toLowerCase());
+    this.dictionary.push(words);
+
+    return true;
+  }
+
+  addPattern(inExpr, outExpr) {
+    if (typeof inExpr !== 'string' || typeof outExpr !== 'string') return false;
+    this.patterns.add(inExpr, outExpr);
+  }
+
+  check(text, maxDiff = this.maxDiff) {
+    if (!('dictionary' in this)) return text;
 
     const dictWords = this.dictionary.words;
-    const inWords = this._parseWords(text);
-    const replaceMap = new Map();
+    const inWords = Worder.parse(text).map((w) => w.toLowerCase());
 
     for (const inWord of inWords) {
-      if (replaceMap.has(inWord)) continue;
+      if (this.replaceMap.has(inWord)) continue;
+      if (dictWords.includes(inWord)) continue;
 
-      if (!dictWords.includes(inWord.toLowerCase())) {
-        let [matchFound, outWord] = this.searcher.oneEditSearch(
-          inWord,
-          dictWords
-        );
-
-        if (!matchFound) {
-          [matchFound, outWord] = this.searcher.linearSearch(
-            inWord,
-            dictWords,
-            maxDiff
-          );
-        }
-
-        if (matchFound) {
-          replaceMap.set(inWord, this._capitalize(inWord, outWord));
-        }
-      }
+      this.replaceMap = Mapper.setMatch(
+        inWord,
+        this.replaceMap,
+        dictWords,
+        maxDiff,
+        this
+      );
     }
 
-    return this._replaceWords(text, replaceMap);
-  }
-
-  _parseWords(text) {
-    const words = text.match(WORD_REGEXP);
-    return words;
-  }
-
-  _replaceWords(text, replaceMap) {
-    let res = text;
-    for (const entry of replaceMap) {
-      const regExp = new RegExp(`\\b${entry[0]}\\b`, 'gi');
-      res = res.replace(regExp, entry[1]);
-    }
+    const res = Worder.replace(text, this.replaceMap);
+    this.replaceMap = Mapper.lowCase(this.replaceMap);
     return res;
-  }
-
-  _capitalize(w1, w2) {
-    let tempWord = w2;
-    if (w1[0] === w1[0].toUpperCase()) {
-      tempWord = w2[0].toUpperCase() + w2.substring(1);
-    }
-    return tempWord;
   }
 }
 
