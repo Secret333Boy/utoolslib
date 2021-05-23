@@ -25,7 +25,6 @@ const tests0 = {
       'Sentence, sentence sentence Sentence, sentence, sentence, Sentence',
       'Capital letter preserving and multiple occurrences',
       'Sentense, sentense sentense Sentense, sebtense, septense, Sebtense',
-      3,
     ],
     [
       'This sentence is for testing dictionary extend',
@@ -89,6 +88,7 @@ const tests1 = {
 const checker = new SpellChecker();
 let dictPath = 'tests/spellChecker/dict.txt';
 checker.createDictionary(dictPath);
+checker.setMaxDiff(3);
 
 console.log('Spell checker creation');
 testRunner(checker, tests0);

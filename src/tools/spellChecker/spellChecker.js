@@ -9,10 +9,11 @@ const proxify = require('./proxify.js');
 const fs = require('fs');
 
 class SpellChecker {
+  static defaultMaxDiff = 3;
+
   constructor() {
     this.searcher = new Searcher();
     this.replaceMap = new Map();
-    this.maxDiff = 5;
   }
 
   createDictionary(path) {
@@ -43,6 +44,11 @@ class SpellChecker {
     return true;
   }
 
+  setMaxDiff(val) {
+    this.maxDiff = val;
+    return true;
+  }
+
   extendDictionary(path) {
     if (!('dictionary' in this)) return false;
 
@@ -65,7 +71,7 @@ class SpellChecker {
     this.patterns.add(inExpr, outExpr);
   }
 
-  check(text, maxDiff = this.maxDiff) {
+  check(text, maxDiff = this.maxDiff || SpellChecker.defaultMaxDiff) {
     if (!('dictionary' in this)) return text;
 
     const dictWords = this.dictionary.words;
