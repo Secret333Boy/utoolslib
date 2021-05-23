@@ -45,12 +45,20 @@ class SpellChecker {
   }
 
   setMaxDiff(val) {
+    if (!Number.isSafeInteger(val) || val <= 0) {
+      console.log(`Can't set maxDiff: illegal input - ${val}`);
+      return false;
+    }
+
     this.maxDiff = val;
     return true;
   }
 
   extendDictionary(path) {
-    if (!('dictionary' in this)) return false;
+    if (!('dictionary' in this)) {
+      console.log(`Can't extend dictionary: no dictionary in checker`);
+      return false;
+    }
 
     let data;
     try {
@@ -67,12 +75,25 @@ class SpellChecker {
   }
 
   addPattern(inExpr, outExpr) {
-    if (typeof inExpr !== 'string' || typeof outExpr !== 'string') return false;
+    if (typeof inExpr !== 'string' || typeof outExpr !== 'string') {
+      console.log(
+        'Pattern adding failed: both arguments must be strings, they are: ' +
+          `${typeof inExpr} and ${typeof outExpr}`
+      );
+      return false;
+    }
+
     this.patterns.add(inExpr, outExpr);
   }
 
   check(text, maxDiff = this.maxDiff || SpellChecker.defaultMaxDiff) {
-    if (!('dictionary' in this)) return text;
+    if (!('dictionary' in this)) {
+      console.log('Check failed: no dictionary in checker');
+      return false;
+    }
+    if (typeof text !== 'string' || text === '') {
+      console.log('Check failed: invalid input text');
+    }
 
     const dictWords = this.dictionary.words;
     const inWords = Worder.parse(text).map((w) => w.toLowerCase());
