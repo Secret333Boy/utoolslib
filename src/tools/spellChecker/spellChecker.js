@@ -91,8 +91,9 @@ class SpellChecker {
       console.log('Check failed: no dictionary in checker');
       return false;
     }
-    if (typeof text !== 'string' || text === '') {
+    if (typeof text !== 'string' || !text) {
       console.log('Check failed: invalid input text');
+      return false;
     }
 
     const dictWords = this.dictionary.words;

@@ -1,6 +1,8 @@
 'use strict';
 
 class Searcher {
+  static LETTERS = 'abcdefghijklmnopqrstuvwxyz';
+
   combinedSearch(...pars) {
     const reducer = (res, srch) => {
       if (res[0]) return res;
@@ -83,10 +85,9 @@ class Searcher {
   }
 
   _edits(word) {
-    const letters = 'abcdefghijklmnopqrstuvwxyz';
     const splits = this.splits(word);
     const reducer = (res, edit) =>
-      res.concat(this[edit](word, splits, letters));
+      res.concat(this[edit](word, splits, Searcher.LETTERS));
     const res = ['deletes', 'transposes', 'replaces', 'inserts'].reduce(
       reducer,
       []
