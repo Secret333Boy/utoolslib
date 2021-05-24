@@ -22,7 +22,7 @@ class TextEncryptor {
     return code ^ (this._seed ^ 1 ^ this._enternalSeed);
   }
 
-  modifyString(data) {
+  encryptString(data) {
     const newData = [];
     for (let i = 0; i < data.length; i++) {
       let code = data[i].charCodeAt(0);
@@ -35,14 +35,7 @@ class TextEncryptor {
   encryptFile(path) {
     fs.readFile(path, 'utf-8', (err, data) => {
       if (err) throw err;
-      fs.writeFileSync(path, this.modifyString(data));
-    });
-  }
-
-  decryptFile(path) {
-    fs.readFile(path, 'utf-8', (err, data) => {
-      if (err) throw err;
-      fs.writeFileSync(path, this.modifyString(data));
+      fs.writeFileSync(path, this.encryptString(data));
     });
   }
 }
