@@ -23,6 +23,10 @@ class TextEncryptor {
   }
 
   encryptString(data) {
+    // eslint-disable-next-line eqeqeq
+    if (data == false) {
+      throw new Error('There is no data to encrypt!');
+    }
     const newData = [];
     for (let i = 0; i < data.length; i++) {
       let code = data[i].charCodeAt(0);
