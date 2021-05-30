@@ -23,7 +23,6 @@ class TextEncryptor {
   }
 
   encryptString(data) {
-    // eslint-disable-next-line eqeqeq
     if (typeof data !== 'string' || !data) {
       throw new Error('There is no data to encrypt!');
     }
