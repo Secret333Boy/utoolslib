@@ -5,8 +5,13 @@
     "node": true
   },
   "extends": "eslint:recommended",
+  "parser": "@babel/eslint-parser",
   "parserOptions": {
-    "ecmaVersion": 2020
+    "requireConfigFile": false,
+    "babelOptions": {
+      "rootMode": "root"
+    }
+    "ecmaVersion": 2021
   },
   "globals": {
     "BigInt": true
