@@ -30,7 +30,7 @@ class TextEncryptor {
       const code = this._modifyCode(char.charCodeAt(0));
       return String.fromCharCode(code);
     });
-    return newData;
+    return newData.join('');
   }
 
   encryptFile(path) {
