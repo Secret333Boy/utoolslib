@@ -1,8 +1,8 @@
 'use strict';
 
 class Table {
-  constructor(obj) {
-    this.obj = obj;
+  constructor(arr) {
+    this.map = new Map(arr);
   }
 }
 
