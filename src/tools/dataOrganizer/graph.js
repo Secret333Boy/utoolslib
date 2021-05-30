@@ -24,18 +24,6 @@ class Graph {
     this.matrix[v1][v2] = 0;
     this.weights[v1][v2] = 0;
   }
-
-  get vertices() {
-    return this.vertices;
-  }
-
-  get matrix() {
-    return this.matrix;
-  }
-
-  get weights() {
-    return this.weights;
-  }
 }
 
 module.exports = Graph;
