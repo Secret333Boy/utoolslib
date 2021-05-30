@@ -8,6 +8,7 @@
   "parser": "@babel/eslint-parser",
   "parserOptions": {
     "requireConfigFile": false,
+    "sourceType": "script",
     "babelOptions": {
       "rootMode": "root"
     },
