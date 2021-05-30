@@ -31,7 +31,7 @@ for (const seed of tests.seeds) {
       assert.deepEqual(TE.encryptString(TE.encryptString(par)), par);
       console.log('SUCCESS');
     } catch (error) {
-      console.log('FAILURE');
+      console.log('FAILURE: ' + error);
       continue;
     }
   }

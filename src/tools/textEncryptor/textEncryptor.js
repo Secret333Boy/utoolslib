@@ -11,7 +11,7 @@ class TextEncryptor {
       _seed: {
         value: seed,
       },
-      _enternalSeed: {
+      _internalSeed: {
         value: 99241492,
       },
     });
@@ -19,27 +19,29 @@ class TextEncryptor {
   }
 
   _modifyCode(code) {
-    return code ^ (this._seed ^ 1 ^ this._enternalSeed);
+    return code ^ (this._seed ^ 1 ^ this._internalSeed);
   }
 
   encryptString(data) {
     // eslint-disable-next-line eqeqeq
-    if (data == false) {
+    if (typeof data !== 'string' || !data) {
       throw new Error('There is no data to encrypt!');
     }
-    const newData = [];
-    for (let i = 0; i < data.length; i++) {
-      let code = data[i].charCodeAt(0);
-      code = this._modifyCode(code);
-      newData.push(String.fromCharCode(code));
-    }
-    return newData.join('');
+    const newData = data.split('').map(char => {
+      const code = this._modifyCode(char.charCodeAt(0));
+      return String.fromCharCode(code);
+    });
+    return newData;
   }
 
   encryptFile(path) {
     fs.readFile(path, 'utf-8', (err, data) => {
       if (err) throw err;
-      fs.writeFileSync(path, this.encryptString(data));
+      try {
+        fs.writeFileSync(path, this.encryptString(data));
+      } catch (error) {
+        console.error(`Failed to write the file: ${path}`);
+      }
     });
   }
 }
