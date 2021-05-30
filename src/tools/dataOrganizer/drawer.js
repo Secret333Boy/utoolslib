@@ -1,13 +1,10 @@
 'use strict';
 const fs = require('fs');
-const Graph = require('./graph.js');
 
 class Drawer {
-  constructor(obj) {
-    if (Graph.isGraph(obj)) {
-      this._mode = 'graph';
-      this.stringImage = this._getImage(obj);
-    }
+  constructor(obj, mode) {
+    this.mode = mode;
+    this.stringImage = this._getImage(obj);
   }
 
   // _getImage(obj) {
