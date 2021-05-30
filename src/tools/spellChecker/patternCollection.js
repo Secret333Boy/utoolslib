@@ -23,19 +23,19 @@ class PatternCollection {
   }
 
   frequency(expr, words = this.dictionary.words) {
-    const occurs = words.reduce(
+    const occurAmount = words.reduce(
       (acc, w) => acc + (w.indexOf(expr) >= 0 ? 1 : 0),
       0
     );
-    return occurs / words.length;
+    return occurAmount / words.length;
   }
 
   clearFrequencies() {
-    Object.values(this).forEach((expr) => (expr.frequency = 0));
+    Object.values(this).forEach(expr => (expr.frequency = 0));
   }
 
   updateFrequencies(words = this.dictionary.words) {
-    Object.entries(this).forEach((entry) => {
+    Object.entries(this).forEach(entry => {
       entry[1].frequency = this.frequency(entry[0], words);
     });
   }

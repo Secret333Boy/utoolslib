@@ -10,12 +10,8 @@ const testText = fs.readFileSync(textPath, 'utf8');
 const checker = new SpellChecker();
 checker.createDictionary(dictPath);
 
-const test = () => {
-  checker.check(testText, 3);
-};
-
 console.time('test');
 
-test();
+checker.check(testText, 3);
 
 console.timeEnd('test');

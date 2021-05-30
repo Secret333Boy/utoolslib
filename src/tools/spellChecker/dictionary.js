@@ -2,30 +2,21 @@
 
 class Dictionary {
   constructor(words = []) {
-    this._words = words.sort();
-    this._length = words.length;
+    this.words = words.sort();
+    this.length = words.length;
   }
 
   push(words) {
-    this._words = words.concat(this._words);
-    this._length += words.length;
-    this._words.sort();
+    this.words = words.concat(this.words).sort();
+    this.length += words.length;
     return this;
   }
 
   clear() {
-    const words = this._words;
-    this._words = [];
-    this._length = 0;
+    const words = this.words;
+    this.words = [];
+    this.length = 0;
     return words;
-  }
-
-  get words() {
-    return this._words;
-  }
-
-  get length() {
-    return this._length;
   }
 }
 

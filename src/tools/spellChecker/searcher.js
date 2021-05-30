@@ -4,14 +4,10 @@ class Searcher {
   static LETTERS = 'abcdefghijklmnopqrstuvwxyz';
 
   combinedSearch(...pars) {
-    const reducer = (res, srch) => {
-      if (res[0]) return res;
-      return this[srch](...pars);
-    };
-    return ['patternSearch', 'oneEditSearch', 'linearSearch'].reduce(reducer, [
-      false,
-      pars[0],
-    ]);
+    const reducer = (res, srch) => (res[0] ? res : this[srch](...pars));
+    const searchMethods = ['patternSearch', 'oneEditSearch', 'linearSearch'];
+    const res = [false, pars[0]];
+    return searchMethods.reduce(reducer, res);
   }
   patternSearch(inWord, dictWords, maxDiff, patterns) {
     const variants = this._patternedVariants(inWord, patterns);
@@ -72,11 +68,11 @@ class Searcher {
     for (const outExpr in patterns) {
       if (patterns[outExpr].frequency < 0.01) continue;
 
-      const match = patterns[outExpr].find((p) => inWord.indexOf(p) >= 0);
+      const match = patterns[outExpr].find(p => inWord.indexOf(p) >= 0);
       if (match !== undefined) {
         const mRegExp = new RegExp(match, 'gi');
         const newWords = variants.concat(
-          variants.map((w) => w.replace(mRegExp, outExpr))
+          variants.map(w => w.replace(mRegExp, outExpr))
         );
         variants.push(...newWords, inWord.replace(mRegExp, outExpr));
       }
@@ -88,11 +84,8 @@ class Searcher {
     const splits = this.splits(word);
     const reducer = (res, edit) =>
       res.concat(this[edit](word, splits, Searcher.LETTERS));
-    const res = ['deletes', 'transposes', 'replaces', 'inserts'].reduce(
-      reducer,
-      []
-    );
-    return res;
+    const editTypes = ['deletes', 'transposes', 'replaces', 'inserts'];
+    return editTypes.reduce(reducer, []);
   }
 
   splits(word) {
@@ -148,7 +141,7 @@ class Searcher {
   _calcDiff(w1, w2) {
     const [short, long] = [w1, w2]
       .sort((w1, w2) => w1.length - w2.length)
-      .map((el) => el.toLowerCase().split(''));
+      .map(el => el.toLowerCase().split(''));
 
     let diff = long.length - short.length;
     diff += short.reduce((acc, val) => {
@@ -162,7 +155,7 @@ class Searcher {
   }
 
   _calcSame(w1, w2) {
-    const [arr1, arr2] = [w1, w2].map((el) => el.toLowerCase().split(''));
+    const [arr1, arr2] = [w1, w2].map(el => el.toLowerCase().split(''));
     let same = 0;
     let index2 = 0;
 
