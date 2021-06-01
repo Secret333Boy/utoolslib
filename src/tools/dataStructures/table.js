@@ -13,6 +13,17 @@ class Table {
         return acc;
       }
     }, 2);
+    const keysLength = Object.keys(obj).map(key => String(key).length);
+    const valuesLength = Object.values(obj).map(value => {
+      let res = 0;
+      if (Array.isArray(value)) {
+        res = Math.max(...value.map(el => String(el).length));
+      } else {
+        res = String(value).length;
+      }
+      return res;
+    });
+    this.maxValueLength = Math.max(...keysLength.concat(valuesLength));
   }
   static isTable(obj) {
     return obj instanceof Table;
