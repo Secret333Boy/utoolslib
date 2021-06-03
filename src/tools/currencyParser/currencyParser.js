@@ -20,12 +20,11 @@ class CurrencyParser {
   async _parse() {
     const url = 'https://api.privatbank.ua/p24api/pubinfo?json&exchange&coursid=5';
     const arr = await fetch(url);
-
     const obj = {};
     obj['Currency'] = ['Buy', 'Sale'];
     arr.forEach(arrEl => {
-      obj[arrEl.ccy] = [arrEl.buy, arrEl.sale].map(el =>
-        (el + (el.base_ccy === 'UAH' ? '₴' : '$'))
+      obj[arrEl.ccy] = [arrEl.buy, arrEl.sale].map(
+        el => el + (arrEl.base_ccy === 'UAH' ? '₴' : '$')
       );
     });
     return new Table(obj);

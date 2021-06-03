@@ -89,7 +89,8 @@ class Drawer {
   }
   draw(path) {
     try {
-      fs.writeFileSync(path, this.stringImage);
+      const write = fs.existsSync(path) ? fs.writeFileSync : fs.appendFileSync;
+      write(path, this.stringImage);
     } catch (e) {
       console.log(`Failed to write: ${e}`);
     }
