@@ -17,6 +17,12 @@ class CurrencyParser {
     }
   }
 
+  abort() {
+    if (this.interval) {
+      clearInterval(this.interval);
+    }
+  }
+
   async _parse() {
     const url = 'https://api.privatbank.ua/p24api/pubinfo?json&exchange&coursid=5';
     const arr = await fetch(url);
