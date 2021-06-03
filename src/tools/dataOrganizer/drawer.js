@@ -1,14 +1,13 @@
 'use strict';
 const fs = require('fs');
+const Table = require('../dataStructures/table');
 
 class Drawer {
   static SYMBOLS = {
     corners: { topLeft: '┌', topRight: '┐', bottomLeft: '└', bottomRight: '┘' },
     lines: { horizontal: '─', vertical: '│' },
-    separators: {
-      ternaryLines: { top: '┬', left: '├', right: '┤', bottom: '┴' },
-      quadroLine: '┼',
-    }
+    ternaryLines: { top: '┬', left: '├', right: '┤', bottom: '┴' },
+    quadroLine: '┼',
   };
   constructor(obj, mode, settings = {}) {
     this.mode = mode;
@@ -44,7 +43,7 @@ class Drawer {
           stringValue.length === horOffset ? '' : ' '.repeat(
             (horOffset - stringValue.length) / 2
           );
-        value = padding + stringValue + padding;
+        stringValue = padding + stringValue + padding;
         stringValue = stringValue.padEnd(horOffset);
         row.push(stringValue);
         row.push(Drawer.SYMBOLS.lines.vertical);
@@ -63,11 +62,20 @@ class Drawer {
 
   _createTableLine(side, length, offset) {
     let res = '';
-    const leftCorner = Drawer.SYMBOLS.corners[side + 'Left'];
-    const rightCorner = Drawer.SYMBOLS.corners[side + 'Right'];
-    const ternaryLine = Drawer.SYMBOLS.separators.ternaryLines[side];
-    const quadroLine = Drawer.SYMBOLS.separators.quadroLine;
-    const separationLine = side ? ternaryLine : quadroLine;
+
+    const ternaryLine = Drawer.SYMBOLS.ternaryLines[side];
+    const quadroLine = Drawer.SYMBOLS.quadroLine;
+
+    let leftCorner, rightCorner, separationLine;
+    if (side) {
+      leftCorner = Drawer.SYMBOLS.corners[side + 'Left'];
+      rightCorner = Drawer.SYMBOLS.corners[side + 'Right'];
+      separationLine = ternaryLine;
+    } else {
+      leftCorner = Drawer.SYMBOLS.ternaryLines.left;
+      rightCorner = Drawer.SYMBOLS.ternaryLines.right;
+      separationLine = quadroLine;
+    }
 
     res += leftCorner;
     for (let i = 0; i < length; i++) {
@@ -88,5 +96,9 @@ class Drawer {
     }
   }
 }
+
+const table = new Table({ a: 12, b: 100 });
+const dr = new Drawer(table);
+console.log(dr.stringImage);
 
 module.exports = Drawer;
