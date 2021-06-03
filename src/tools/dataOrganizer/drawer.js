@@ -5,8 +5,10 @@ class Drawer {
   static SYMBOLS = {
     corners: { topLeft: '┌', topRight: '┐', bottomLeft: '└', bottomRight: '┘' },
     lines: { horizontal: '─', vertical: '│' },
-    ternaryLines: { top: '┬', left: '├', right: '┤', bottom: '┴' },
-    quadroLine: '┼',
+    separators: {
+      ternaryLines: { top: '┬', left: '├', right: '┤', bottom: '┴' },
+      quadroLine: '┼',
+    }
   };
   constructor(obj, mode, settings = {}) {
     this.mode = mode;
@@ -23,7 +25,6 @@ class Drawer {
   }
 
   _drawTable(table) {
-    console.log(table);
     const res = [];
     const obj = table.obj;
     const cols = table.colsNum;
@@ -62,24 +63,11 @@ class Drawer {
 
   _createTableLine(side, length, offset) {
     let res = '';
-    let leftCorner, rightCorner, separationLine;
-    switch (side) {
-    case 'top':
-      leftCorner = Drawer.SYMBOLS.corners.topLeft;
-      rightCorner = Drawer.SYMBOLS.corners.topRight;
-      separationLine = Drawer.SYMBOLS.ternaryLines.top;
-      break;
-    case 'bottom':
-      leftCorner = Drawer.SYMBOLS.corners.bottomLeft;
-      rightCorner = Drawer.SYMBOLS.corners.bottomRight;
-      separationLine = Drawer.SYMBOLS.ternaryLines.bottom;
-      break;
-    default:
-      leftCorner = Drawer.SYMBOLS.ternaryLines.left;
-      rightCorner = Drawer.SYMBOLS.ternaryLines.right;
-      separationLine = Drawer.SYMBOLS.quadroLine;
-      break;
-    }
+    const leftCorner = Drawer.SYMBOLS.corners[side + 'Left'];
+    const rightCorner = Drawer.SYMBOLS.corners[side + 'Right'];
+    const ternaryLine = Drawer.SYMBOLS.separators.ternaryLines[side];
+    const quadroLine = Drawer.SYMBOLS.separators.quadroLine;
+    const separationLine = side ? ternaryLine : quadroLine;
 
     res += leftCorner;
     for (let i = 0; i < length; i++) {
