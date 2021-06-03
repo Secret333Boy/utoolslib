@@ -1,6 +1,5 @@
 'use strict';
 const fs = require('fs');
-const Table = require('../dataStructures/table');
 
 class Drawer {
   static SYMBOLS = {
@@ -96,9 +95,5 @@ class Drawer {
     }
   }
 }
-
-const table = new Table({ a: 12, b: 100 });
-const dr = new Drawer(table);
-console.log(dr.stringImage);
 
 module.exports = Drawer;
