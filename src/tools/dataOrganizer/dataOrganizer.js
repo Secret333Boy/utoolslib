@@ -8,10 +8,7 @@ class DataOrganizer {
   }
 
   drawString(obj, path = '') {
-    let mode;
-    if (Table.isTable(obj)) {
-      mode = 'table';
-    }
+    const mode = Table.isTable(obj) ? 'table' : '';
     const drawer = new Drawer(obj, mode);
 
     if (path) {

@@ -15,12 +15,10 @@ class Drawer {
   }
 
   _getImage(obj) {
-    let res = [];
-    if (this.mode === 'table' || !this.mode) {
-      res = this._drawTable(obj);
-    } else {
+    if (this.mode !== 'table' && this.mode) {
       throw new Error('Unexpected mode key!');
     }
+    const res = this._drawTable(obj);
     return res.join('');
   }
 
@@ -33,29 +31,30 @@ class Drawer {
 
     res.push(this._createTableLine('top', cols, horOffset));
     Object.keys(obj).forEach((key, i) => {
-      const raw = [];
+      const row = [];
       const values = [key].concat(
         Array.isArray(obj[key]) ? obj[key] : [obj[key]]
       );
 
-      raw.push(Drawer.SYMBOLS.lines.vertical);
+      row.push(Drawer.SYMBOLS.lines.vertical);
       values.forEach(value => {
-        value = String(value);
-        const padding = value.length === horOffset ? '' : ' '.repeat(
-          (horOffset - value.length) / 2
-        );
-        value = padding + value + padding;
-        value = value.padEnd(horOffset);
-        raw.push(value);
-        raw.push(Drawer.SYMBOLS.lines.vertical);
+        let stringValue = String(value);
+        const padding =
+          stringValue.length === horOffset ? '' : ' '.repeat(
+            (horOffset - stringValue.length) / 2
+          );
+        value = padding + stringValue + padding;
+        stringValue = stringValue.padEnd(horOffset);
+        row.push(stringValue);
+        row.push(Drawer.SYMBOLS.lines.vertical);
       });
-      raw.push('\n');
+      row.push('\n');
 
       if (i !== 0) {
         res.push(this._createTableLine('', cols, horOffset));
       }
 
-      res.push(raw.join(''));
+      res.push(row.join(''));
     });
     res.push(this._createTableLine('bottom', cols, horOffset));
     return res;
