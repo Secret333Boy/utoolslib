@@ -3,18 +3,29 @@
 class Table {
   constructor(obj) {
     this.obj = obj;
-    this.rawsNum = Object.keys(obj).length;
-    this.colsNum = Object.keys(obj).reduce((acc, key) => {
-      const el = obj[key];
+  }
+  static isTable(obj) {
+    return obj instanceof Table;
+  }
+
+  get rowsNum() {
+    return Object.keys(this.obj).length;
+  }
+
+  get colsNum() {
+    return Object.keys(this.obj).reduce((acc, key) => {
+      const el = this.obj[key];
 
       if (Array.isArray(el) && el.length + 1 > acc) {
         return el.length + 1;
-      } else {
-        return acc;
       }
+      return acc;
     }, 2);
-    const keysLength = Object.keys(obj).map(key => String(key).length);
-    const valuesLength = Object.values(obj).map(value => {
+  }
+
+  get maxValueLength() {
+    const keysLength = Object.keys(this.obj).map(key => String(key).length);
+    const valuesLength = Object.values(this.obj).map(value => {
       let res = 0;
       if (Array.isArray(value)) {
         res = Math.max(...value.map(el => String(el).length));
@@ -23,10 +34,7 @@ class Table {
       }
       return res;
     });
-    this.maxValueLength = Math.max(...keysLength.concat(valuesLength));
-  }
-  static isTable(obj) {
-    return obj instanceof Table;
+    return Math.max(...keysLength.concat(valuesLength));
   }
 }
 

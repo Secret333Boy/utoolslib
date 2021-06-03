@@ -4,17 +4,16 @@ const Node = require('./node.js');
 class Stack {
   HEAD = null;
   constructor(data) {
-    if (data) {
-      if (Array.isArray(data)) {
-        this.fromArray(data);
-      } else if (typeof data !== 'object') {
-        this.push(data);
-      } else {
-        throw new TypeError(
-          'The stack constructor argument must be either array or primitive.' +
-          `\nIts type: ${typeof data}`
-        );
-      }
+    if (!data) return;
+    if (Array.isArray(data)) {
+      this.fromArray(data);
+    } else if (typeof data !== 'object') {
+      this.push(data);
+    } else {
+      throw new TypeError(
+        'The stack constructor argument must be either array or primitive.' +
+        `\nIts type: ${typeof data}`
+      );
     }
   }
 
