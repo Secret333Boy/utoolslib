@@ -5,6 +5,10 @@ To install it you need to:
 ```
 sudo apt-get install nodejs
 ```
+or
+```
+npm install -g node
+```
 2. Clone our library to your working directory
 ```
 git clone https://github.com/Secret333Boy/utoolslib
