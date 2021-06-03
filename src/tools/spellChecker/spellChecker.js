@@ -56,7 +56,7 @@ class SpellChecker {
 
   extendDictionary(path) {
     if (!('dictionary' in this)) {
-      console.log(`Can't extend dictionary: no dictionary in checker`);
+      console.log('Can`t extend dictionary: no dictionary in checker');
       return false;
     }
 
