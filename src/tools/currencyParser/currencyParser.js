@@ -2,13 +2,14 @@
 
 const DataOrganizer = require('../dataOrganizer/dataOrganizer.js');
 const Table = require('../dataStructures/table.js');
+const fetch = require('../fetch/fetch.js');
 
 class CurrencyParser {
   constructor(path, updateInterval = false) {
     this.path = path;
 
     if (updateInterval) {
-      setInterval(() => {
+      this.interval = setInterval(() => {
         this._draw();
       }, updateInterval);
     } else {
@@ -18,21 +19,23 @@ class CurrencyParser {
 
   async _parse() {
     const url = 'https://api.privatbank.ua/p24api/pubinfo?json&exchange&coursid=5';
-    const arr = await fetch(url);//realize with XML!
+    const arr = await fetch(url);
+
     const obj = {};
     obj['Currency'] = ['Buy', 'Sale'];
-    arr.forEach(el => {
-      obj[el.ccy] = [el.buy, el.sale].map(
-        el => (el + el.base_ccy === 'UAH' ? '₴' : '$')
+    arr.forEach(arrEl => {
+      obj[arrEl.ccy] = [arrEl.buy, arrEl.sale].map(el =>
+        (el + (el.base_ccy === 'UAH' ? '₴' : '$'))
       );
     });
-    console.log(obj);
     return new Table(obj);
   }
 
   _draw() {
     const organizer = new DataOrganizer();
-    organizer.drawString(this._parse(), this.path);
+    this._parse().then(table => {
+      organizer.drawString(table, this.path);
+    });
   }
 }
 

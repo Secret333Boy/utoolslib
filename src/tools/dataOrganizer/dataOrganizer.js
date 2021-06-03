@@ -11,9 +11,7 @@ class DataOrganizer {
     const mode = Table.isTable(obj) ? 'table' : '';
     const drawer = new Drawer(obj, mode);
 
-    if (path) {
-      drawer.draw(path);
-    }
+    drawer.draw(path);
     return drawer.stringImage;
   }
 }
