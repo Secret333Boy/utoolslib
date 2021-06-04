@@ -1,11 +1,11 @@
 'use strict';
 
-const Dictionary = require('./dictionary.js');
+const Dictionary = require('../dataStructures/dictionary.js');
 const Searcher = require('./searcher.js');
 const Worder = require('./worder.js');
 const Mapper = require('./mapper.js');
 const PatternCollection = require('./patternCollection.js');
-const proxify = require('./proxify.js');
+const proxify = require('../proxify/proxify.js');
 const fs = require('fs');
 
 class SpellChecker {
