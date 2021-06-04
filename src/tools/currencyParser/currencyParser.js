@@ -6,14 +6,13 @@ const fetch = require('../fetch/fetch.js');
 
 class CurrencyParser {
   constructor(path, updateInterval = false) {
-    this.path = path;
+    this.drawPath = path;
 
+    this._draw();
     if (updateInterval) {
       this.interval = setInterval(() => {
         this._draw();
       }, updateInterval);
-    } else {
-      this._draw();
     }
   }
 
@@ -39,7 +38,7 @@ class CurrencyParser {
   _draw() {
     const organizer = new DataOrganizer();
     this._parse().then(table => {
-      organizer.drawString(table, this.path);
+      organizer.drawString(table, this.drawPath);
     });
   }
 }
