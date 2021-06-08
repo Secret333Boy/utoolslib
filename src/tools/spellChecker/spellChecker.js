@@ -17,7 +17,7 @@ class SpellChecker {
   }
 
   createDictionary(path) {
-    if ('dictionary' in this) return false;
+    if (this.dictionary) return false;
 
     let data;
     try {
@@ -55,7 +55,7 @@ class SpellChecker {
   }
 
   extendDictionary(path) {
-    if (!('dictionary' in this)) {
+    if (!this.dictionary) {
       console.log('Can`t extend dictionary: no dictionary in checker');
       return false;
     }
@@ -87,7 +87,7 @@ class SpellChecker {
   }
 
   check(text, maxDiff = this.maxDiff || SpellChecker.defaultMaxDiff) {
-    if (!('dictionary' in this)) {
+    if (!this.dictionary) {
       console.log('Check failed: no dictionary in checker');
       return false;
     }
