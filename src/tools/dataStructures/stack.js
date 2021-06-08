@@ -3,6 +3,24 @@ const Node = require('./node.js');
 
 class Stack {
   head = null;
+
+  [Symbol.iterator] = () => {
+    const stack = this;
+    return {
+      current: stack.head,
+      done: false,
+      next() {
+        const res = {
+          done: this.done,
+          value: this.current?.data,
+        };
+        this.current = this.current?.nextNode;
+        this.done = !this.current;
+        return res;
+      },
+    };
+  };
+
   constructor(data) {
     if (!data) return;
     if (Array.isArray(data)) {
@@ -32,14 +50,6 @@ class Stack {
     this.head.nextNode = null;
     this.head = tempNode;
     return data;
-  }
-
-  forEach(callback) {
-    let pointer = this.head;
-    while (pointer) {
-      callback(pointer.data);
-      pointer = this.head.nextNode;
-    }
   }
 
   clear() {
