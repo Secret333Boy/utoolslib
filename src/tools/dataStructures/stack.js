@@ -50,12 +50,16 @@ class Stack {
 
   toArray() {
     const res = [];
-    this.forEach(el => res.push(el));
+    for (const el of this) {
+      res.push(el);
+    }
     return res;
   }
 
   fromArray(arr) {
-    arr.forEach(el => this.push(el));
+    for (const el of arr) {
+      this.push(el);
+    }
   }
 
   static isStack(obj) {
