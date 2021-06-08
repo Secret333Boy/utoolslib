@@ -2,8 +2,9 @@
 const fs = require('fs');
 
 class TextEncryptor {
+  static defaultInternalSeed = 99241492;
   constructor(seed) {
-    if (typeof(seed) !== 'number')
+    if (typeof seed !== 'number')
       throw new Error(
         `Seed is expected to be a number. Its type is ${typeof seed}`
       );
@@ -12,7 +13,7 @@ class TextEncryptor {
         value: seed,
       },
       _internalSeed: {
-        value: 99241492,
+        value: TextEncryptor.defaultInternalSeed,
       },
     });
     Object.freeze(this);
