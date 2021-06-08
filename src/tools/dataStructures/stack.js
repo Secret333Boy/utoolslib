@@ -6,7 +6,7 @@ class Stack {
   constructor(data) {
     if (!data) return;
     if (Array.isArray(data)) {
-      this.fromArray(data);
+      this.pushAll(data);
     } else if (typeof data !== 'object') {
       this.push(data);
     } else {
@@ -56,7 +56,7 @@ class Stack {
     return res;
   }
 
-  fromArray(arr) {
+  pushAll(arr) {
     for (const el of arr) {
       this.push(el);
     }
