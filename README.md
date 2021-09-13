@@ -1,4 +1,7 @@
-# Utoolslib
+# Utoolslib 
+
+[![Node.js CI](https://github.com/Secret333Boy/utoolslib/actions/workflows/node.js.yml/badge.svg)](https://github.com/Secret333Boy/utoolslib/actions/workflows/node.js.yml)
+
 Simple library created for working with text files and data structures.
 To install it you need to:
 1. Install node.js
