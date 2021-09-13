@@ -4,7 +4,10 @@
     "es6": true,
     "node": true
   },
-  "extends": "eslint:recommended",
+  "plugins": [
+    "sonarjs"
+  ],
+  "extends": ["eslint:recommended", "plugin:sonarjs/recommended"],
   "parser": "@babel/eslint-parser",
   "parserOptions": {
     "requireConfigFile": false,
