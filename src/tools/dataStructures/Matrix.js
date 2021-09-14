@@ -37,7 +37,7 @@ class Matrix {
     }
 
     if (this.xLength !== matrix.xLength || this.yLength !== matrix.yLength) {
-      return new Error('Imposible to add matrixes with different size');
+      throw new Error('Imposible to add matrixes with different size');
     }
 
     for (let i = 0; i < this.arr.length; i++) {
@@ -54,7 +54,7 @@ class Matrix {
     }
 
     if (this.xLength !== matrix.yLength || this.yLength !== matrix.xLength) {
-      return new Error('Imposible to multiply matrixes with unapropiate size');
+      throw new Error('Imposible to multiply matrixes with unapropiate size');
     }
 
     for (let i = 0; i < this.arr.length; i++) {
