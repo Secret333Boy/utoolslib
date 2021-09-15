@@ -76,8 +76,7 @@ class Matrix {
         res[j][i] = this.arr[i][j];
       }
     }
-    this.arr = res;
-    return this.arr;
+    return new Matrix(res);
   }
 
   get xLength() {
