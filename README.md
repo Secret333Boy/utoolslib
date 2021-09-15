@@ -1,5 +1,6 @@
 # Utoolslib 
 
+[![Quality gate](https://sonarcloud.io/api/project_badges/quality_gate?project=Secret333Boy_utoolslib)](https://sonarcloud.io/dashboard?id=Secret333Boy_utoolslib)
 [![Node.js CI](https://github.com/Secret333Boy/utoolslib/actions/workflows/node.js.yml/badge.svg)](https://github.com/Secret333Boy/utoolslib/actions/workflows/node.js.yml)
 
 Simple library created for working with text files and data structures.
