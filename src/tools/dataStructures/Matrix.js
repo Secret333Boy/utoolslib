@@ -71,8 +71,8 @@ class Matrix {
 
   transpone() {
     const res = [];
-    for (let i = 0; i < this.arr.length; i++) {
-      for (let j = 0; j < this.arr[i].length; j++) {
+    for (const i in this.arr) {
+      for (const j in this.arr[i]) {
         res[j][i] = this.arr[i][j];
       }
     }
