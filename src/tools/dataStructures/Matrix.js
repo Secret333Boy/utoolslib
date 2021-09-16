@@ -54,7 +54,7 @@ class Matrix {
     }
 
     if (this.xLength !== matrix.yLength || this.yLength !== matrix.xLength) {
-      throw new Error('Imposible to multiply matrixes with unapropiate size');
+      throw new Error('Impossible to multiply matrixes with unappropriate sizes');
     }
 
     for (let i = 0; i < this.arr.length; i++) {
