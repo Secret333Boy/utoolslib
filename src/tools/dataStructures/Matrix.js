@@ -23,7 +23,7 @@ class Matrix {
   }
 
   getElement(x, y) {
-    return this.arr[(y, x)];
+    return this.arr[y][x];
   }
 
   setElement(x, y, data) {
