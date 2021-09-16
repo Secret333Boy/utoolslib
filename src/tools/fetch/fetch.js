@@ -1,5 +1,5 @@
 'use strict';
-const http = require('node:https');
+const http = require('https');
 
 const fetch = async (url) =>
   new Promise((resolve, reject) => {
