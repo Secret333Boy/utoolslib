@@ -45,7 +45,7 @@ class Matrix {
         this.arr[i][j] += matrix.arr[i][j];
       }
     }
-    return this.arr;
+    return this;
   }
 
   mult(matrix) {
