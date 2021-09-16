@@ -5,7 +5,7 @@
   "main": "./src/index.js",
   "scripts": {
     "test": "npm run lint",
-    "lint": "eslint **/*.js --ignore-path .gitignore && prettier -c \"**/*.js\" \"**/*.json\" \"**/*.md\" \"**/*.yml\"",
+    "lint": "eslint . --ignore-path .gitignore && prettier -c \"**/*.js\" \"**/*.json\" \"**/*.md\" \"**/*.yml\"",
     "fmt": "prettier --write \"**/*.js\" \"**/*.json\" \"**/*.md\" \".*rc\" \"**/*.yml\"",
     "prepare": "husky install"
   },
@@ -14,6 +14,7 @@
     "@babel/eslint-parser": "^7.14.3",
     "eslint": "^7.32.0",
     "eslint-config-metarhia": "^7.0.1",
+    "eslint-config-prettier": "^8.3.0",
     "eslint-plugin-import": "^2.24.2",
     "eslint-plugin-prettier": "^4.0.0",
     "eslint-plugin-sonarjs": "^0.10.0",

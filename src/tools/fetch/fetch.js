@@ -1,10 +1,10 @@
 'use strict';
 const http = require('node:https');
 
-const fetch = async url =>
+const fetch = async (url) =>
   new Promise((resolve, reject) => {
     http
-      .get(url, res => {
+      .get(url, (res) => {
         const statusCode = res.statusCode;
 
         if (statusCode !== 200) {
@@ -14,7 +14,7 @@ const fetch = async url =>
         } else {
           res.setEncoding('utf8');
           let responseData = '';
-          res.on('data', chunk => (responseData += chunk));
+          res.on('data', (chunk) => (responseData += chunk));
           res.on('end', () => {
             try {
               const parsedData = JSON.parse(responseData);
@@ -26,7 +26,7 @@ const fetch = async url =>
           });
         }
       })
-      .on('error', err => {
+      .on('error', (err) => {
         console.error(`Get request failed: ${err.message}`);
         reject();
       });

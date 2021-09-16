@@ -28,9 +28,9 @@ class CurrencyParser {
     const arr = await fetch(url);
     const obj = {};
     obj['Currency'] = ['Buy', 'Sale'];
-    arr.forEach(arrEl => {
+    arr.forEach((arrEl) => {
       obj[arrEl.ccy] = [arrEl.buy, arrEl.sale].map(
-        el => el + (arrEl.base_ccy === 'UAH' ? '₴' : '$')
+        (el) => el + (arrEl.base_ccy === 'UAH' ? '₴' : '$')
       );
     });
     return new Table(obj);
@@ -38,7 +38,7 @@ class CurrencyParser {
 
   _draw() {
     const organizer = new DataOrganizer();
-    this._parse().then(table => {
+    this._parse().then((table) => {
       organizer.drawString(table, this.drawPath);
     });
   }

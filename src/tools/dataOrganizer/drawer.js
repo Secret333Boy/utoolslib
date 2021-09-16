@@ -36,7 +36,7 @@ class Drawer {
       );
 
       row.push(Drawer.SYMBOLS.lines.vertical);
-      values.forEach(value => {
+      values.forEach((value) => {
         let stringValue = String(value);
         const padding =
           stringValue.length === horOffset

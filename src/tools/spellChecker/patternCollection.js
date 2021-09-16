@@ -31,11 +31,11 @@ class PatternCollection {
   }
 
   clearFrequencies() {
-    Object.values(this).forEach(expr => (expr.frequency = 0));
+    Object.values(this).forEach((expr) => (expr.frequency = 0));
   }
 
   updateFrequencies(words = this.dictionary.words) {
-    Object.entries(this).forEach(entry => {
+    Object.entries(this).forEach((entry) => {
       entry[1].frequency = this.frequency(entry[0], words);
     });
   }
