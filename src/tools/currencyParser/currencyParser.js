@@ -23,7 +23,8 @@ class CurrencyParser {
   }
 
   async _parse() {
-    const url = 'https://api.privatbank.ua/p24api/pubinfo?json&exchange&coursid=5';
+    const url =
+      'https://api.privatbank.ua/p24api/pubinfo?json&exchange&coursid=5';
     const arr = await fetch(url);
     const obj = {};
     obj['Currency'] = ['Buy', 'Sale'];
