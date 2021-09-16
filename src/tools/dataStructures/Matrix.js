@@ -37,7 +37,7 @@ class Matrix {
     }
 
     if (this.xLength !== matrix.xLength || this.yLength !== matrix.yLength) {
-      throw new Error('Imposible to add matrixes with different size');
+      throw new Error('Impossible to add matrixes with different sizes');
     }
 
     for (let i = 0; i < this.arr.length; i++) {
