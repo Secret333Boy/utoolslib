@@ -21,6 +21,7 @@
     "BigInt": true
   },
   "rules": {
+    "sonarjs/no-duplicate-string": "off",
     "indent": [
       "error",
       2

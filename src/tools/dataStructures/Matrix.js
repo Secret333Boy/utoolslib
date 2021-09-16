@@ -54,13 +54,15 @@ class Matrix {
     }
 
     if (this.xLength !== matrix.yLength || this.yLength !== matrix.xLength) {
-      throw new Error('Impossible to multiply matrixes with unappropriate sizes');
+      throw new Error(
+        'Impossible to multiply matrixes with unappropriate sizes'
+      );
     }
 
-    for (let i = 0; i < this.arr.length; i++) {
-      for (let j = 0; j < this.arr[i].length; j++) {
-        this.arr[i][j] = this.arr[i][0] + matrix.arr[0][j];
-        for (let k = 1; k < this.xLength; k++) {
+    for (const i in this.arr) {
+      for (const j in this.arr[i]) {
+        this.arr[i][j] = this.arr[i][0] * matrix.arr[0][j];
+        for (const k in this.xLength) {
           this.arr[i][j] += this.arr[i][k] * matrix.arr[k][j];
         }
       }
