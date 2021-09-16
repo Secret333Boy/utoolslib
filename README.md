@@ -1,4 +1,4 @@
-# Utoolslib 
+# Utoolslib
 
 [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=Secret333Boy_utoolslib&metric=alert_status)](https://sonarcloud.io/dashboard?id=Secret333Boy_utoolslib)
 [![Node.js CI](https://github.com/Secret333Boy/utoolslib/actions/workflows/node.js.yml/badge.svg)](https://github.com/Secret333Boy/utoolslib/actions/workflows/node.js.yml)
