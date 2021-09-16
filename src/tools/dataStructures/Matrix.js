@@ -66,7 +66,7 @@ class Matrix {
       }
     }
 
-    return this.arr;
+    return this;
   }
 
   transpone() {
