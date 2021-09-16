@@ -28,7 +28,7 @@ class Matrix {
 
   setElement(x, y, data) {
     this.arr[y][x] = data;
-    return this.arr;
+    return this;
   }
 
   add(matrix) {
