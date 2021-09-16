@@ -1,5 +1,5 @@
 {
-  "name": "utoolslib",
+  "name": "@secret333boy/utoolslib",
   "version": "0.0.1",
   "description": "Simple library for text parsing and modificaiton.",
   "main": "./src/index.js",
@@ -26,7 +26,7 @@
     "url": "https://github.com/Secret333Boy/utoolslib.git"
   },
   "publishConfig": {
-    "@Secret333Boy:registry": "https://npm.pkg.github.com"
+    "@secret333boy:registry": "https://npm.pkg.github.com"
   },
   "keywords": [
     "parsing",
