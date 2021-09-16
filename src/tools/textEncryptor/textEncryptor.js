@@ -4,10 +4,11 @@ const fs = require('fs');
 class TextEncryptor {
   static defaultInternalSeed = 99241492;
   constructor(seed) {
-    if (typeof seed !== 'number')
+    if (typeof seed !== 'number') {
       throw new Error(
         `Seed is expected to be a number. Its type is ${typeof seed}`
       );
+    }
     Object.defineProperties(this, {
       _seed: {
         value: seed,
@@ -27,7 +28,7 @@ class TextEncryptor {
     if (typeof data !== 'string' || !data) {
       throw new Error('There is no data to encrypt!');
     }
-    const newData = data.split('').map(char => {
+    const newData = data.split('').map((char) => {
       const code = this._modifyCode(char.charCodeAt(0));
       return String.fromCharCode(code);
     });

@@ -68,11 +68,11 @@ class Searcher {
     for (const outExpr in patterns) {
       if (patterns[outExpr].frequency < 0.01) continue;
 
-      const match = patterns[outExpr].find(p => inWord.indexOf(p) >= 0);
+      const match = patterns[outExpr].find((p) => inWord.indexOf(p) >= 0);
       if (match !== undefined) {
         const mRegExp = new RegExp(match, 'gi');
         const newWords = variants.concat(
-          variants.map(w => w.replace(mRegExp, outExpr))
+          variants.map((w) => w.replace(mRegExp, outExpr))
         );
         variants.push(...newWords, inWord.replace(mRegExp, outExpr));
       }
@@ -141,7 +141,7 @@ class Searcher {
   _calcDiff(w1, w2) {
     const [short, long] = [w1, w2]
       .sort((w1, w2) => w1.length - w2.length)
-      .map(el => el.toLowerCase().split(''));
+      .map((el) => el.toLowerCase().split(''));
 
     let diff = long.length - short.length;
     diff += short.reduce((acc, val) => {
@@ -155,7 +155,7 @@ class Searcher {
   }
 
   _calcSame(w1, w2) {
-    const [arr1, arr2] = [w1, w2].map(el => el.toLowerCase().split(''));
+    const [arr1, arr2] = [w1, w2].map((el) => el.toLowerCase().split(''));
     let same = 0;
     let index2 = 0;
 

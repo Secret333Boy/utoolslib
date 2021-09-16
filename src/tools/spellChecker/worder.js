@@ -4,8 +4,7 @@ const Worder = {
   WORD_REGEXP: /\b[a-z]+\b/gi,
 
   parse(text) {
-    const words = text.match(this.WORD_REGEXP);
-    return words;
+    return text.match(this.WORD_REGEXP);
   },
 
   replace(text, replaceMap) {

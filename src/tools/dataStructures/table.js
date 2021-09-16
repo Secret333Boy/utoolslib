@@ -24,11 +24,11 @@ class Table {
   }
 
   get maxValueLength() {
-    const keysLength = Object.keys(this.obj).map(key => String(key).length);
-    const valuesLength = Object.values(this.obj).map(value => {
+    const keysLength = Object.keys(this.obj).map((key) => String(key).length);
+    const valuesLength = Object.values(this.obj).map((value) => {
       let res = 0;
       if (Array.isArray(value)) {
-        res = Math.max(...value.map(el => String(el).length));
+        res = Math.max(...value.map((el) => String(el).length));
       } else {
         res = String(value).length;
       }

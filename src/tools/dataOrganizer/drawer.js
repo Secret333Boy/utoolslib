@@ -36,12 +36,12 @@ class Drawer {
       );
 
       row.push(Drawer.SYMBOLS.lines.vertical);
-      values.forEach(value => {
+      values.forEach((value) => {
         let stringValue = String(value);
         const padding =
-          stringValue.length === horOffset ? '' : ' '.repeat(
-            (horOffset - stringValue.length) / 2
-          );
+          stringValue.length === horOffset
+            ? ''
+            : ' '.repeat((horOffset - stringValue.length) / 2);
         stringValue = padding + stringValue + padding;
         stringValue = stringValue.padEnd(horOffset);
         row.push(stringValue);
