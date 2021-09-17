@@ -11,7 +11,7 @@ class Matrix {
 
   #alignRows(arr) {
     const res = [];
-    const maxRowLength = Math.max(...arr.map(el => el.length));
+    const maxRowLength = Math.max(...arr.map((el) => el.length));
 
     for (const row of arr) {
       while (row.length !== maxRowLength) {

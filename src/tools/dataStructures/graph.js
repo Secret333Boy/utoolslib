@@ -5,7 +5,7 @@ const Matrix = require('./Matrix.js');
 
 class Graph {
   constructor(vertices, matrix, weights) {
-    if (vertices.some(el => !Vertex.isVertex(el))) {
+    if (vertices.some((el) => !Vertex.isVertex(el))) {
       throw new TypeError('Must be instance of Vertex');
     }
     if (!Matrix.isMatrix(matrix)) {

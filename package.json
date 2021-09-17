@@ -1,24 +1,32 @@
 {
   "name": "utoolslib",
-  "version": "1.0.0",
+  "version": "0.0.1",
   "description": "Simple library for text parsing and modificaiton.",
   "main": "./src/index.js",
   "scripts": {
     "test": "npm run lint",
-    "lint": "eslint **/*.js",
+    "lint": "eslint . --ignore-path .gitignore && prettier -c \"**/*.js\" \"**/*.json\" \"**/*.md\" \"**/*.yml\"",
+    "fmt": "prettier --write \"**/*.js\" \"**/*.json\" \"**/*.md\" \".*rc\" \"**/*.yml\"",
     "prepare": "husky install"
   },
   "devDependencies": {
     "@babel/core": "^7.14.3",
     "@babel/eslint-parser": "^7.14.3",
-    "eslint": "^7.27.0",
+    "eslint": "^7.32.0",
+    "eslint-config-metarhia": "^7.0.1",
+    "eslint-config-prettier": "^8.3.0",
+    "eslint-plugin-import": "^2.24.2",
+    "eslint-plugin-prettier": "^4.0.0",
     "eslint-plugin-sonarjs": "^0.10.0",
     "husky": "^7.0.2",
-    "prettier": "^2.2.1"
+    "prettier": "^2.4.1"
   },
   "repository": {
     "type": "git",
     "url": "https://github.com/Secret333Boy/utoolslib.git"
+  },
+  "publishConfig": {
+    "registry": "https://registry.npmjs.org/"
   },
   "keywords": [
     "parsing",

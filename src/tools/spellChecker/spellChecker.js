@@ -27,11 +27,11 @@ class SpellChecker {
       return false;
     }
 
-    const words = data.match(Worder.WORD_REGEXP).map(w => w.toLowerCase());
+    const words = data.match(Worder.WORD_REGEXP).map((w) => w.toLowerCase());
     this.dictionary = new Dictionary(words);
     this.patterns = new PatternCollection(this.dictionary);
 
-    const push = words => {
+    const push = (words) => {
       this.replaceMap = Mapper.update(this, words);
       this.patterns.updateFrequencies(this.dictionary.words.concat(words));
     };
@@ -68,7 +68,7 @@ class SpellChecker {
       return false;
     }
 
-    const words = data.match(Worder.WORD_REGEXP).map(w => w.toLowerCase());
+    const words = data.match(Worder.WORD_REGEXP).map((w) => w.toLowerCase());
     this.dictionary.push(words);
 
     return true;
@@ -97,7 +97,7 @@ class SpellChecker {
     }
 
     const dictWords = this.dictionary.words;
-    const inWords = Worder.parse(text).map(w => w.toLowerCase());
+    const inWords = Worder.parse(text).map((w) => w.toLowerCase());
 
     for (const inWord of inWords) {
       if (this.replaceMap.has(inWord)) continue;

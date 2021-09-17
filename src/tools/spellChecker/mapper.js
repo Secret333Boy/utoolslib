@@ -4,7 +4,7 @@ const Mapper = {
   lowCase(map) {
     const lowMap = new Map();
     for (const entry of map.entries()) {
-      const newEntry = entry.map(el => el.toLowerCase());
+      const newEntry = entry.map((el) => el.toLowerCase());
       lowMap.set(...newEntry);
     }
     return lowMap;

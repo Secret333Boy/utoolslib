@@ -2,8 +2,8 @@
 
 const CurrencyParser = require('./tools/currencyParser/currencyParser.js');
 const DataOrganizer = require('./tools/dataOrganizer/dataOrganizer.js');
-const SpellChecker = require('./tools/spellChecker/SpellChecker.js');
-const TextEncryptor = require('./tools/textEncryptor/TextEncryptor.js');
+const SpellChecker = require('./tools/spellChecker/spellChecker.js');
+const TextEncryptor = require('./tools/textEncryptor/textEncryptor.js');
 
 const fetch = require('./tools/fetch/fetch.js');
 const proxify = require('./tools/proxify/proxify.js');
