@@ -1,6 +1,6 @@
 {
   "name": "utoolslib",
-  "version": "0.0.2",
+  "version": "0.0.1",
   "description": "Simple library for text parsing and modificaiton.",
   "main": "./src/index.js",
   "scripts": {
