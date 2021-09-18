@@ -28,7 +28,7 @@ class Matrix {
 
   setElement(x, y, data) {
     this.arr[y][x] = data;
-    return this.arr;
+    return this;
   }
 
   add(matrix) {
@@ -37,15 +37,15 @@ class Matrix {
     }
 
     if (this.xLength !== matrix.xLength || this.yLength !== matrix.yLength) {
-      throw new Error('Imposible to add matrixes with different size');
+      throw new Error('Impossible to add matrixes with different sizes');
     }
 
-    for (let i = 0; i < this.arr.length; i++) {
-      for (let j = 0; j < this.arr[i].length; j++) {
+    for (const i in this.arr) {
+      for (const j in this.arr[i]) {
         this.arr[i][j] += matrix.arr[i][j];
       }
     }
-    return this.arr;
+    return this;
   }
 
   mult(matrix) {
@@ -54,25 +54,27 @@ class Matrix {
     }
 
     if (this.xLength !== matrix.yLength || this.yLength !== matrix.xLength) {
-      throw new Error('Imposible to multiply matrixes with unapropiate size');
+      throw new Error(
+        'Impossible to multiply matrixes with unappropriate sizes'
+      );
     }
 
-    for (let i = 0; i < this.arr.length; i++) {
-      for (let j = 0; j < this.arr[i].length; j++) {
-        this.arr[i][j] = this.arr[i][0] + matrix.arr[0][j];
-        for (let k = 1; k < this.xLength; k++) {
+    for (const i in this.arr) {
+      for (const j in this.arr[i]) {
+        this.arr[i][j] = this.arr[i][0] * matrix.arr[0][j];
+        for (const k in this.xLength) {
           this.arr[i][j] += this.arr[i][k] * matrix.arr[k][j];
         }
       }
     }
 
-    return this.arr;
+    return this;
   }
 
   transpone() {
     const res = [];
-    for (let i = 0; i < this.arr.length; i++) {
-      for (let j = 0; j < this.arr[i].length; j++) {
+    for (const i in this.arr) {
+      for (const j in this.arr[i]) {
         res[j][i] = this.arr[i][j];
       }
     }
