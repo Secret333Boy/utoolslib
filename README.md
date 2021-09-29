@@ -6,29 +6,9 @@
 [![Node.js Package](https://github.com/Secret333Boy/utoolslib/actions/workflows/release-package.yml/badge.svg)](https://github.com/Secret333Boy/utoolslib/actions/workflows/release-package.yml)
 ![GitHub](https://img.shields.io/github/license/Secret333Boy/utoolslib)
 
-Simple library created for working with text files and data structures.
+Simple library created for working with text files, data structures, algorythms etc.
 To install it you need to:
 
-1. Install node.js
-
 ```
-sudo apt-get install nodejs
-```
-
-or
-
-```
-npm install -g node
-```
-
-2. Clone our library to your working directory
-
-```
-git clone https://github.com/Secret333Boy/utoolslib
-```
-
-3. Import `index.js` file in your code
-
-```
-const tools = require('./utoolslib/src/index.js');
+npm i utoolslib
 ```
