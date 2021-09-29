@@ -4,6 +4,7 @@
 [![Node.js CI](https://github.com/Secret333Boy/utoolslib/actions/workflows/node.js.yml/badge.svg)](https://github.com/Secret333Boy/utoolslib/actions/workflows/node.js.yml)
 [![CodeQL](https://github.com/Secret333Boy/utoolslib/actions/workflows/codeql-analysis.yml/badge.svg)](https://github.com/Secret333Boy/utoolslib/actions/workflows/codeql-analysis.yml)
 [![Node.js Package](https://github.com/Secret333Boy/utoolslib/actions/workflows/release-package.yml/badge.svg)](https://github.com/Secret333Boy/utoolslib/actions/workflows/release-package.yml)
+![GitHub](https://img.shields.io/github/license/Secret333Boy/utoolslib)
 
 Simple library created for working with text files and data structures.
 To install it you need to:
