@@ -1,6 +1,6 @@
 'use strict';
 
-const Dictionary = require('../dataStructures/dictionary.js');
+const Dictionary = require('../dataStructures/Dictionary.js');
 const Searcher = require('./searcher.js');
 const Worder = require('./worder.js');
 const Mapper = require('./mapper.js');

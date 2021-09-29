@@ -1,10 +1,21 @@
 'use strict';
 
 class Vertex {
-  constructor(x = null, y = null, data = null) {
-    this.x = x;
-    this.y = y;
+  constructor(data = null) {
     this.data = data;
+    this.links = new Set();
+  }
+
+  linkTo(...verteces) {
+    for (const item of verteces) {
+      this.links.add(item);
+    }
+  }
+
+  unlinkFrom(...verteces) {
+    for (const item of verteces) {
+      this.links.delete(item);
+    }
   }
 
   static isVertex(obj) {

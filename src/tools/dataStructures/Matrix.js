@@ -1,7 +1,7 @@
 'use strict';
 
 class Matrix {
-  constructor(arr) {
+  constructor(arr = []) {
     this.arr = this.#alignRows(arr);
   }
 
@@ -29,6 +29,61 @@ class Matrix {
   setElement(x, y, data) {
     this.arr[y][x] = data;
     return this;
+  }
+
+  pushRow(row = []) {
+    this.arr.push(row);
+    this.arr = this.#alignRows(this.arr);
+    return this;
+  }
+
+  removeRow(index) {
+    this.arr.splice(index, 1);
+    return this;
+  }
+
+  removeCol(index) {
+    for (const i in this.arr) {
+      this.arr[i].splice(index, 1);
+    }
+    return this;
+  }
+
+  pushCol(col = []) {
+    for (const i in this.arr) {
+      this.arr[i].push(col[i] || null);
+    }
+    return this;
+  }
+
+  find(item) {
+    for (const i in this.arr) {
+      for (const j in this.arr[i]) {
+        if (this.arr[i][j] === item) return { y: i, x: j };
+      }
+    }
+    return false;
+  }
+
+  copy() {
+    const res = [];
+    for (const i in this.arr) {
+      res.push(new Array(...this.arr[i]));
+    }
+    return new Matrix(res);
+  }
+
+  isEqual(matrix) {
+    let res = true;
+    for (const i in this.arr) {
+      for (const j in matrix.arr) {
+        if (this.arr[i][j] !== matrix.arr[i][j]) {
+          res = false;
+          break;
+        }
+      }
+    }
+    return res;
   }
 
   add(matrix) {
@@ -73,12 +128,23 @@ class Matrix {
 
   transpone() {
     const res = [];
-    for (const i in this.arr) {
-      for (const j in this.arr[i]) {
+    for (const j in this.arr) {
+      res.push([]);
+      for (const i in this.arr[j]) {
         res[j][i] = this.arr[i][j];
       }
     }
     return new Matrix(res);
+  }
+
+  toString() {
+    let res = '';
+    for (const i in this.arr) {
+      for (const j in this.arr[i]) {
+        res += this.arr[i][j] === null ? '0' : String(this.arr[i][j]);
+      }
+    }
+    return res;
   }
 
   get xLength() {
@@ -95,6 +161,14 @@ class Matrix {
 
   get cols() {
     return this.transpone().arr;
+  }
+
+  set cols(arr) {
+    this.arr = new Matrix(arr).transpone().arr;
+  }
+
+  set rows(arr) {
+    this.arr = arr;
   }
 }
 
