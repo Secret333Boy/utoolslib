@@ -18,7 +18,6 @@ const PriorityQueue = require('./tools/dataStructures/PriorityQueue.js');
 const Table = require('./tools/dataStructures/Table.js');
 const Matrix = require('./tools/dataStructures/Matrix.js');
 
-
 module.exports = {
   tools: {
     CurrencyParser,
@@ -37,6 +36,6 @@ module.exports = {
     Tree,
     Queue,
     PriorityQueue,
-    Matrix
+    Matrix,
   },
 };
