@@ -6,7 +6,7 @@
 [![Node.js Package](https://github.com/Secret333Boy/utoolslib/actions/workflows/release-package.yml/badge.svg)](https://github.com/Secret333Boy/utoolslib/actions/workflows/release-package.yml)
 ![GitHub](https://img.shields.io/github/license/Secret333Boy/utoolslib)
 
-Simple library created for working with text files, data structures, algorythms etc.
+A simple library created for working with text files, data structures, algorithms, etc.
 To install it you need to:
 
 ```
