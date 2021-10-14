@@ -12,28 +12,19 @@ class PriorityQueue extends Queue {
   push(data, priority) {
     const node = new Node(data, priority);
 
-    if (this.head.priority * this.direction < priority * this.direction) {
-      node.nextNode = this.head;
-      this.head = node;
-    } else if (
-      this.lastNode.priority * this.direction >
-      priority * this.direction
-    ) {
-      this.lastNode.nextNode = node;
-      this.lastNode = node;
-    } else {
-      let pointer = this.head;
-      while (
-        pointer.nextNode &&
-        pointer.nextNode.priority * this.direction >= priority * this.direction
-      ) {
-        pointer = pointer.nextNode;
-      }
-
-      const buf = pointer.nextNode;
-      pointer.nextNode = node;
-      node.nextNode = buf;
+    let prev = null;
+    let pointer = this.head;
+    while (pointer?.priority * this.direction >= priority * this.direction) {
+      prev = pointer;
+      pointer = pointer.nextNode;
     }
+
+    node.nextNode = pointer;
+    if (prev === null) {
+      this.head = node;
+      return this;
+    }
+    prev.nextNode = node;
 
     return this;
   }
