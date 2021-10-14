@@ -11,7 +11,7 @@ for (const data of inData) {
   pq.push(data, data);
 }
 
-inData.sort();
+inData.sort((a, b) => a - b);
 pq.pop();
 
 const outData = [];
