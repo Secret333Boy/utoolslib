@@ -23,7 +23,7 @@ class Graph {
   #linkVerteces(verteces, matrix) {
     for (const i in verteces) {
       const vertex = verteces[i];
-      for (const j in matrix.rows) {
+      for (const j in matrix.cols) {
         if (matrix.getElement(i, j) !== 0) {
           vertex.linkTo(verteces[j]);
         } else {
@@ -58,7 +58,9 @@ class Graph {
   }
 
   remove(obj) {
-    this.#delete(obj);
+    if (this.verteces.includes(obj)) {
+      this.#delete(obj);
+    }
   }
 
   #add(obj) {

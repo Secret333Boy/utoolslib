@@ -7,15 +7,11 @@ class Vertex {
   }
 
   linkTo(...verteces) {
-    for (const item of verteces) {
-      this.links.add(item);
-    }
+    verteces.forEach(this.links.add, this.links);
   }
 
   unlinkFrom(...verteces) {
-    for (const item of verteces) {
-      this.links.delete(item);
-    }
+    verteces.forEach(this.links.delete, this.links);
   }
 
   static isVertex(obj) {

@@ -43,15 +43,15 @@ class Matrix {
   }
 
   removeCol(index) {
-    for (const i in this.arr) {
-      this.arr[i].splice(index, 1);
+    for (const row of this.arr) {
+      row.splice(index, 1);
     }
     return this;
   }
 
   pushCol(col = []) {
     for (const i in this.arr) {
-      this.arr[i].push(col[i] || null);
+      this.arr[i].push(col[i]);
     }
     return this;
   }
@@ -67,8 +67,8 @@ class Matrix {
 
   copy() {
     const res = [];
-    for (const i in this.arr) {
-      res.push(new Array(...this.arr[i]));
+    for (const row of this.arr) {
+      res.push(new Array(...row));
     }
     return new Matrix(res);
   }
@@ -164,10 +164,16 @@ class Matrix {
   }
 
   set cols(arr) {
+    if (!Array.isArray(arr)) {
+      throw new TypeError('Should be an array');
+    }
     this.arr = new Matrix(arr).transpone().arr;
   }
 
   set rows(arr) {
+    if (!Array.isArray(arr)) {
+      throw new TypeError('Should be an array');
+    }
     this.arr = arr;
   }
 }

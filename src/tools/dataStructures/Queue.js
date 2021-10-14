@@ -46,8 +46,8 @@ class Queue {
   toArray() {
     const res = [];
 
-    for (const data of this) {
-      res.push(data);
+    for (const node of this) {
+      res.push(node.data);
     }
     return res;
   }

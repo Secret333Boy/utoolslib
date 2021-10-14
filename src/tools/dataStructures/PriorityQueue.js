@@ -34,6 +34,8 @@ class PriorityQueue extends Queue {
       pointer.nextNode = node;
       node.nextNode = buf;
     }
+
+    return this;
   }
 }
 

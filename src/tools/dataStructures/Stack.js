@@ -60,8 +60,8 @@ class Stack {
 
   toArray() {
     const res = [];
-    for (const el of this) {
-      res.push(el);
+    for (const node of this) {
+      res.push(node.data);
     }
     return res;
   }
