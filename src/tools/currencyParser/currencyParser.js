@@ -1,7 +1,7 @@
 'use strict';
 
 const DataOrganizer = require('../dataOrganizer/dataOrganizer.js');
-const Table = require('../dataStructures/table.js');
+const Table = require('../dataStructures/Table.js');
 const fetch = require('../fetch/fetch.js');
 
 class CurrencyParser {

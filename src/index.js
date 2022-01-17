@@ -9,11 +9,15 @@ const actorModel = require('./tools/actorModel/actorModel.js');
 const fetch = require('./tools/fetch/fetch.js');
 const proxify = require('./tools/proxify/proxify.js');
 
-const Dictionary = require('./tools/dataStructures/dictionary.js');
-const Graph = require('./tools/dataStructures/graph.js');
-const Node = require('./tools/dataStructures/node.js');
-const Stack = require('./tools/dataStructures/stack.js');
-const Table = require('./tools/dataStructures/table.js');
+const Dictionary = require('./tools/dataStructures/Dictionary.js');
+const Graph = require('./tools/dataStructures/Graph.js');
+const Tree = require('./tools/dataStructures/Tree.js');
+const Node = require('./tools/dataStructures/Node.js');
+const Stack = require('./tools/dataStructures/Stack.js');
+const Queue = require('./tools/dataStructures/Queue.js');
+const PriorityQueue = require('./tools/dataStructures/PriorityQueue.js');
+const Table = require('./tools/dataStructures/Table.js');
+const Matrix = require('./tools/dataStructures/Matrix.js');
 
 module.exports = {
   tools: {
@@ -31,5 +35,9 @@ module.exports = {
     Node,
     Stack,
     Table,
+    Tree,
+    Queue,
+    PriorityQueue,
+    Matrix,
   },
 };
