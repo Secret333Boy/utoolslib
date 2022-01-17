@@ -3,13 +3,14 @@ const {
   tools: { actorModel },
 } = require('../../src/index.js');
 const path = require('path');
-const { Actor } = actorModel;
+const { ActorSystem, Actor } = actorModel;
 
-// const as = new ActorSystem();
-const server = new Actor(
-  'Server',
-  path.resolve(__dirname, './expressServer/index.js')
-);
-server.start();
-console.log(server);
-server.stop();
+const actorSystem = new ActorSystem();
+class Server extends Actor {
+  constructor() {
+    super('server', path.resolve(__dirname, './expressServer/index.js'));
+  }
+}
+actorSystem.register('server', Server);
+actorSystem.start('server');
+console.log(actorSystem);
