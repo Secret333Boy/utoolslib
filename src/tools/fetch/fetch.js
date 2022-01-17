@@ -1,9 +1,11 @@
 'use strict';
-const http = require('https');
+const http = require('http');
+const https = require('https');
 
 const fetch = async (url) =>
   new Promise((resolve, reject) => {
-    http
+    const protocol = url.startsWith('https') ? https : http;
+    protocol
       .get(url, (res) => {
         const statusCode = res.statusCode;
 

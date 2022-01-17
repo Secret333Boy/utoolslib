@@ -3,8 +3,7 @@ const { fork } = require('child_process');
 const Queue = require('../dataStructures/Queue.js');
 
 class Actor {
-  constructor(name, path) {
-    this.name = name;
+  constructor(path) {
     this.path = path;
     this.queue = new Queue();
   }
@@ -24,29 +23,25 @@ class Actor {
 }
 class ActorSystem {
   actors = new Map();
-  instances = [];
   constructor() {}
 
-  register(name, ActorClass) {
-    if (!name) {
+  register(ActorClass) {
+    if (!ActorClass.name) {
       throw new Error('Actor should have a name');
     }
-    this.actors.set(name, ActorClass);
+    this.actors.set(ActorClass.name, ActorClass);
   }
 
   start(name, count = 1) {
     const ActorClass = this.actors.get(name);
     for (let i = 0; i < count; i++) {
       const actor = new ActorClass();
-      this.instances.push(actor);
       actor.start();
     }
   }
 
   stop(name) {
-    this.instances
-      .filter((actor) => actor.name === name)
-      .map((actor) => actor.stop());
+    this.actors.get(name).stop();
   }
 }
 

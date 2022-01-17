@@ -8,9 +8,16 @@ const { ActorSystem, Actor } = actorModel;
 const actorSystem = new ActorSystem();
 class Server extends Actor {
   constructor() {
-    super('server', path.resolve(__dirname, './expressServer/index.js'));
+    super(path.resolve(__dirname, './actors/express.js'));
   }
 }
-actorSystem.register('server', Server);
-actorSystem.start('server');
+class Monitor extends Actor {
+  constructor() {
+    super(path.resolve(__dirname, './actors/monitoring.js'));
+  }
+}
+actorSystem.register(Server);
+actorSystem.register(Monitor);
+actorSystem.start('Server');
+actorSystem.start('Monitor');
 console.log(actorSystem);
