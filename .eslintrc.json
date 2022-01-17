@@ -4,8 +4,12 @@
     "es6": true,
     "node": true
   },
-  "plugins": ["sonarjs"],
-  "extends": ["metarhia", "plugin:sonarjs/recommended", "prettier"],
+  "extends": [
+    "metarhia",
+    "plugin:sonarjs/recommended",
+    "plugin:prettier/recommended"
+  ],
+  "plugins": ["prettier", "sonarjs"],
   "parser": "@babel/eslint-parser",
   "parserOptions": {
     "requireConfigFile": false,
