@@ -1,6 +1,6 @@
 'use strict';
 const Drawer = require('./drawer');
-const Table = require('../dataStructures/table.js');
+const Table = require('../dataStructures/Table.js');
 
 class DataOrganizer {
   constructor(settings = {}) {

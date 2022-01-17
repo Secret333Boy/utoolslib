@@ -1,5 +1,5 @@
 'use strict';
-const Node = require('./node.js');
+const Node = require('./Node.js');
 
 class Stack {
   head = null;
@@ -12,7 +12,7 @@ class Stack {
       next() {
         const res = {
           done: this.done,
-          value: this.current?.data,
+          value: this.current,
         };
         this.current = this.current?.nextNode;
         this.done = !this.current;
@@ -60,8 +60,8 @@ class Stack {
 
   toArray() {
     const res = [];
-    for (const el of this) {
-      res.push(el);
+    for (const node of this) {
+      res.push(node.data);
     }
     return res;
   }
