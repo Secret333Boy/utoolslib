@@ -4,6 +4,7 @@ const CurrencyParser = require('./tools/currencyParser/currencyParser.js');
 const DataOrganizer = require('./tools/dataOrganizer/dataOrganizer.js');
 const SpellChecker = require('./tools/spellChecker/spellChecker.js');
 const TextEncryptor = require('./tools/textEncryptor/textEncryptor.js');
+const EventEmmiter = require('./tools/EventEmmiter/EventEmmiter.js');
 
 const fetch = require('./tools/fetch/fetch.js');
 const proxify = require('./tools/proxify/proxify.js');
@@ -24,6 +25,7 @@ module.exports = {
     DataOrganizer,
     SpellChecker,
     TextEncryptor,
+    EventEmmiter,
     fetch,
     proxify,
   },
